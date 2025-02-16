@@ -1,4 +1,4 @@
-import { Catch, ArgumentsHost, HttpException, Logger } from '@nestjs/common';
+import { ArgumentsHost, Catch, HttpException, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 const getErrorTitle = (status: number) => {
