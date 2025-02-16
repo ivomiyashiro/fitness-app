@@ -1,0 +1,31 @@
+GET {{BASE_URL}}/training-plan
+
+###
+
+GET {{BASE_URL}}/training-plan/0ba34d7f-988f-4ecb-b647-ee885766d2f2
+###
+
+POST {{BASE_URL}}/training-plan
+content-type: application/json
+
+{
+  "name": "Test 2",
+  "description": "",
+  "weeks": 4
+}
+
+###
+
+PUT {{BASE_URL}}/training-plan/0ba34d7f-988f-4ecb-b647-ee885766d2f2
+content-type: application/json
+
+{
+  "name": "Training Plan 2",
+  "description": "Training Plan 2 Description Updated"
+}
+
+###
+
+DELETE {{BASE_URL}}/training-plan/b24f2536-e5d8-4a10-8267-2dcc1d4fad8b
+
+###
