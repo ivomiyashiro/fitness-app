@@ -1,21 +1,21 @@
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit",
-    "source.organizeImports": "explicit"
-  },
-  "editor.tabSize": 2,
-  "editor.insertSpaces": true,
-  "rest-client.environmentVariables": {
-    "local": {
-      "BASE_URL": "http://localhost:3030/api"
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+        "source.fixAll": "explicit",
+        "source.organizeImports": "explicit"
     },
-    "staging": {
-      "BASE_URL": "http://localhost:3030/api"
-    },
-    "production": {
-      "BASE_URL": "http://localhost:3030/api"
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "rest-client.environmentVariables": {
+        "local": {
+            "BASE_URL": "http://localhost:3030/api"
+        },
+        "staging": {
+            "BASE_URL": "http://localhost:3030/api"
+        },
+        "production": {
+            "BASE_URL": "http://localhost:3030/api"
+        }
     }
-  }
 }
