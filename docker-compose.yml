@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  fitness-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '${PORT}:${PORT}'
+    volumes:
+      - .:/app
+      - /app/node_modules # Exclude node_modules from volume
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - PORT=${PORT}
+    env_file:
+      - .env
