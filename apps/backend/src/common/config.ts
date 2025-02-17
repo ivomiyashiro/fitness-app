@@ -3,5 +3,8 @@ export const CONFIG = {
   API: {
     PREFIX: '/api',
   },
+  CORS: {
+    ORIGIN: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  },
   DELETED_MESSAGE: 'Resource deleted successfully',
 };
