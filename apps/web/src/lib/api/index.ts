@@ -1,8 +1,9 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { CONFIG } from "@/utils/config";
 import { RequestData, RequestParams } from "./index.types";
 
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL,
+  baseURL: CONFIG.API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
