@@ -16,8 +16,6 @@ RUN pnpm install
 # Copy the rest of the app
 COPY . .
 
-RUN pnpx prisma generate --schema=./src/prisma/schema.prisma
+EXPOSE 3000
 
-EXPOSE 3030
-
-CMD ["pnpm", "start:dev"]
+CMD [ "pnpm", "start:dev", "--host", "0.0.0.0" ]
