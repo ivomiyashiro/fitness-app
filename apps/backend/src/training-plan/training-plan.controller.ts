@@ -20,7 +20,7 @@ import {
 } from './services';
 import { CreateTrainingPlan, UpdateTrainingPlan } from './validators';
 
-@Controller('training-plan')
+@Controller('training-plans')
 export class TrainingPlanController {
   constructor(
     private readonly getTrainingPlanService: GetTrainingPlanService,
