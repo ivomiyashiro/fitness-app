@@ -13,6 +13,6 @@ export const useAppHeaderStore = createGlobalStore<HeaderStore>(
     prevPage: undefined,
     showSettings: false,
     showPrevPage: false,
-    title: "Default title",
+    title: "Fitness App",
   },
 );
