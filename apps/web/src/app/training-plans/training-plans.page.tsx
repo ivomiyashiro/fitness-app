@@ -1,18 +1,18 @@
-import { useNavigate } from "react-router";
 import { NotepadTextIcon } from "lucide-react";
+import { useNavigate } from "react-router";
 
 import {
-  useTrainingPlanDelete,
   useTrainingPlan,
+  useTrainingPlanDelete,
 } from "@/hooks/use-training-plan";
 
+import { PageLayout } from "@/components/layouts/page/page.layout";
 import { AppFallback } from "@/components/ui/app-fallback";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { List, ListItem } from "@/components/ui/list";
-import { PageLayout } from "@/components/layouts/page/page.layout";
 
-import { useTrainingPlansPage } from "./training-plans.page.hook";
 import { TrainingPlanForm } from "./training-plans-form";
+import { useTrainingPlansPage } from "./training-plans.page.hook";
 
 const TrainingPlansPage = () => {
   const navigate = useNavigate();

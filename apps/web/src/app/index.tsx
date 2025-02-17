@@ -1,4 +1,4 @@
-import { getDevice } from "@/helpers/get-device";
+import { getDevice } from "@/utils/get-device";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppRouter } from "./router";
 
