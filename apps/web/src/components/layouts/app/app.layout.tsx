@@ -9,7 +9,7 @@ export const AppLayout = () => {
   return (
     <div className="flex h-screen flex-col">
       <AppHeader />
-      <main className="app-padding h-full overflow-auto">
+      <main className="app-padding relative h-full overflow-auto">
         <Outlet />
         <Toaster />
       </main>
