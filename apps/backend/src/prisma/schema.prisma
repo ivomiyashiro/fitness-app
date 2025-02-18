@@ -9,23 +9,23 @@ datasource db {
 }
 
 model TrainingPlan {
-  id        String   @id @default(uuid())
-  name      String @unique @db.VarChar(50)
-  description String @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  trainingPlanId String   @id @default(uuid())
+  name           String   @unique @db.VarChar(50)
+  description    String?  @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
   // Relations
   weeks TrainingPlanWeek[]
 }
 
 model TrainingPlanWeek {
-  id        String   @id @default(uuid())
-  trainingPlanId String
-  weekNumber Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  trainingPlanWeekId String   @id @default(uuid())
+  trainingPlanId     String
+  weekNumber         Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   // Relations
-  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [id])
+  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId])
 }

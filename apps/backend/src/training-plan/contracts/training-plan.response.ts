@@ -1,5 +1,5 @@
 export interface ITrainingPlanResponse {
-  id: string;
+  trainingPlanId: string;
   name: string;
   description: string;
 }

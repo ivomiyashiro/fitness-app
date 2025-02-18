@@ -8,7 +8,7 @@ export class DeleteTrainingPlanService {
 
   async handle(id: string): Promise<TrainingPlan> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
-      where: { id },
+      where: { trainingPlanId: id },
     });
 
     if (!trainingPlan) {
@@ -19,7 +19,7 @@ export class DeleteTrainingPlanService {
     }
 
     return await this.prisma.trainingPlan.delete({
-      where: { id },
+      where: { trainingPlanId: id },
     });
   }
 }

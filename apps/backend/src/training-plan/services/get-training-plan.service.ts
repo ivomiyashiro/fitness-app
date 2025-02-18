@@ -8,7 +8,7 @@ export class GetTrainingPlanService {
 
   async handle(id: string): Promise<TrainingPlan> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
-      where: { id },
+      where: { trainingPlanId: id },
     });
 
     if (!trainingPlan) {

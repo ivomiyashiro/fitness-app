@@ -1,6 +1,6 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TrainingPlan } from '@prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
 import { UpdateTrainingPlan } from '../validators';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class UpdateTrainingPlanService {
     contract: UpdateTrainingPlan,
   ): Promise<TrainingPlan> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
-      where: { id },
+      where: { trainingPlanId: id },
     });
 
     if (!trainingPlan) {
@@ -26,7 +26,7 @@ export class UpdateTrainingPlanService {
       where: { name: contract.name },
     });
 
-    if (existingTrainingPlan && existingTrainingPlan.id !== id) {
+    if (existingTrainingPlan && existingTrainingPlan.trainingPlanId !== id) {
       throw new HttpException(
         `Training plan with name '${contract.name}' already exists`,
         HttpStatus.BAD_REQUEST,
@@ -39,7 +39,7 @@ export class UpdateTrainingPlanService {
     };
 
     return await this.prisma.trainingPlan.update({
-      where: { id },
+      where: { trainingPlanId: id },
       data: updatedTrainingPlan,
     });
   }
