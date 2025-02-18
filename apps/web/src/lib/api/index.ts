@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
-import { CONFIG } from "@/utils/config";
+import { CONFIG } from "@/config";
 import { RequestData, RequestParams } from "./index.types";
 
 const apiClient: AxiosInstance = axios.create({
