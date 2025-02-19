@@ -16,7 +16,7 @@ model TrainingPlan {
   updatedAt      DateTime @updatedAt
 
   // Relations
-  weeks TrainingPlanWeek[]
+  weeks TrainingPlanWeek[] 
 }
 
 model TrainingPlanWeek {
@@ -27,5 +27,5 @@ model TrainingPlanWeek {
   updatedAt          DateTime @updatedAt
 
   // Relations
-  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId])
+  trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId], onDelete: Cascade)
 }
