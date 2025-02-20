@@ -10,7 +10,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { TrainingPlanAdapter } from './adapters';
-import { ITrainingPlanResponse } from './contracts/training-plan.response';
+import { TrainingPlanResponse } from './contracts/training-plan.response';
 import {
   CreateTrainingPlanService,
   DeleteTrainingPlanService,
@@ -32,7 +32,7 @@ export class TrainingPlanController {
   ) {}
 
   @Get()
-  async getTrainingPlan(): Promise<ITrainingPlanResponse[]> {
+  async getTrainingPlan(): Promise<TrainingPlanResponse[]> {
     const trainingPlans = await this.getManyTrainingPlanService.handle();
 
     return this.trainingPlanAdapter.toResponseArray(trainingPlans);
@@ -41,7 +41,7 @@ export class TrainingPlanController {
   @Get(':id')
   async getTrainingPlanById(
     @Param('id') id: string,
-  ): Promise<ITrainingPlanResponse> {
+  ): Promise<TrainingPlanResponse> {
     const trainingPlan = await this.getTrainingPlanService.handle(id);
 
     return this.trainingPlanAdapter.toResponse(trainingPlan);
@@ -50,7 +50,7 @@ export class TrainingPlanController {
   @Post()
   async createTrainingPlan(
     @Body() contract: CreateTrainingPlan,
-  ): Promise<ITrainingPlanResponse> {
+  ): Promise<TrainingPlanResponse> {
     const trainingPlan = await this.createTrainingPlanService.handle(contract);
 
     return this.trainingPlanAdapter.toResponse(trainingPlan);
@@ -60,7 +60,7 @@ export class TrainingPlanController {
   async updateTrainingPlan(
     @Param('id') id: string,
     @Body() contract: UpdateTrainingPlan,
-  ): Promise<ITrainingPlanResponse> {
+  ): Promise<TrainingPlanResponse> {
     const trainingPlan = await this.updateTrainingPlanService.handle(
       id,
       contract,

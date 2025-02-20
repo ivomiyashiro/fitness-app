@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma-client"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model TrainingPlan {
+  trainingPlanId String   @id @default(uuid())
+  name           String   @unique @db.VarChar(50)
+  description    String?  @db.VarChar(255)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  trainingPlanWeeks TrainingPlanWeek[]
+}
+
+model TrainingPlanWeek {
+  trainingPlanWeekId String   @id @default(uuid())
+  trainingPlanId     String
+  weekNumber         Int
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  trainingPlan TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId], onDelete: Cascade)
+}

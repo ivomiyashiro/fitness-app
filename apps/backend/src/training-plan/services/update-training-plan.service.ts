@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TrainingPlan } from '@prisma/client';
 import { PrismaService } from '@/prisma/prisma.service';
+
 import { UpdateTrainingPlan } from '../validators';
+import { TrainingPlanWithWeeks } from '../contracts';
 
 @Injectable()
 export class UpdateTrainingPlanService {
@@ -10,7 +11,7 @@ export class UpdateTrainingPlanService {
   async handle(
     id: string,
     contract: UpdateTrainingPlan,
-  ): Promise<TrainingPlan> {
+  ): Promise<TrainingPlanWithWeeks> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
       where: { trainingPlanId: id },
     });
@@ -41,6 +42,9 @@ export class UpdateTrainingPlanService {
     return await this.prisma.trainingPlan.update({
       where: { trainingPlanId: id },
       data: updatedTrainingPlan,
+      include: {
+        trainingPlanWeeks: true,
+      },
     });
   }
 }

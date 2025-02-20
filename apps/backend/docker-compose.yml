@@ -1,5 +1,6 @@
 services:
-  fitness-backend:
+  fitness:
+    container_name: backend
     build:
       context: .
       dockerfile: Dockerfile.dev

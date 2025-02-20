@@ -1,12 +1,17 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { TrainingPlan } from '@prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+
+import { TrainingPlanWithWeeks } from '../contracts';
 
 @Injectable()
 export class GetManyTrainingPlanService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async handle(): Promise<TrainingPlan[]> {
-    return await this.prisma.trainingPlan.findMany();
+  async handle(): Promise<TrainingPlanWithWeeks[]> {
+    return await this.prisma.trainingPlan.findMany({
+      include: {
+        trainingPlanWeeks: true,
+      },
+    });
   }
 }

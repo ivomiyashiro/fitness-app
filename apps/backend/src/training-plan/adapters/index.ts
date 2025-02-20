@@ -1,26 +1,31 @@
 import { Injectable } from '@nestjs/common';
-import { TrainingPlan } from '@prisma/client';
-import { ITrainingPlanResponse } from '../contracts/training-plan.response';
+import { TrainingPlanResponse, TrainingPlanWithWeeks } from '../contracts';
 
 @Injectable()
 export class TrainingPlanAdapter {
-  toResponse(trainingPlan: TrainingPlan): ITrainingPlanResponse {
+  toResponse(trainingPlan: TrainingPlanWithWeeks): TrainingPlanResponse {
     return TrainingPlanAdapter.adaptToResponse(trainingPlan);
   }
 
-  toResponseArray(trainingPlans: TrainingPlan[]): ITrainingPlanResponse[] {
+  toResponseArray(
+    trainingPlans: TrainingPlanWithWeeks[],
+  ): TrainingPlanResponse[] {
     return TrainingPlanAdapter.adaptToResponseArray(trainingPlans);
   }
 
-  private static adaptToResponse(trainingPlan: TrainingPlan) {
+  private static adaptToResponse(trainingPlan: TrainingPlanWithWeeks) {
     return {
       trainingPlanId: trainingPlan.trainingPlanId,
       name: trainingPlan.name,
       description: trainingPlan.description,
+      trainingPlanWeeks: trainingPlan.trainingPlanWeeks.map((week) => ({
+        trainingPlanWeekId: week.trainingPlanWeekId,
+        weekNumber: week.weekNumber,
+      })),
     };
   }
 
-  private static adaptToResponseArray(trainingPlans: TrainingPlan[]) {
+  private static adaptToResponseArray(trainingPlans: TrainingPlanWithWeeks[]) {
     return trainingPlans.map((trainingPlan) =>
       TrainingPlanAdapter.adaptToResponse(trainingPlan),
     );

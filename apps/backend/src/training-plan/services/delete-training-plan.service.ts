@@ -1,6 +1,6 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TrainingPlan } from '@prisma/client';
+import { TrainingPlan } from '@/prisma/generated/prisma-client';
 
 @Injectable()
 export class DeleteTrainingPlanService {

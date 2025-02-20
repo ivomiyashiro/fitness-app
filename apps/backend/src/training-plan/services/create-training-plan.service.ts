@@ -1,13 +1,14 @@
-import { PrismaService } from '@/prisma/prisma.service';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { TrainingPlan } from '@prisma/client';
+import { PrismaService } from '@/prisma/prisma.service';
+
 import { CreateTrainingPlan } from '../validators';
+import { TrainingPlanWithWeeks } from '../contracts';
 
 @Injectable()
 export class CreateTrainingPlanService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async handle(contract: CreateTrainingPlan): Promise<TrainingPlan> {
+  async handle(contract: CreateTrainingPlan): Promise<TrainingPlanWithWeeks> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
       where: { name: contract.name },
     });
@@ -35,11 +36,14 @@ export class CreateTrainingPlanService {
     const createdTrainingPlan = await this.prisma.trainingPlan.create({
       data: {
         ...newTrainingPlan,
-        weeks: {
+        trainingPlanWeeks: {
           createMany: {
             data: newTrainingPlanWeeks,
           },
         },
+      },
+      include: {
+        trainingPlanWeeks: true,
       },
     });
 
