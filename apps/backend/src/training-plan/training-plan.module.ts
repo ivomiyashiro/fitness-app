@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { TrainingPlanController } from './training-plan.controller';
 import { TrainingPlanAdapter } from './adapters';
 import {
-  CreateTrainingPlanService,
-  DeleteTrainingPlanService,
-  GetManyTrainingPlanService,
-  GetTrainingPlanService,
-  UpdateTrainingPlanService,
+  TrainingPlanCreateService,
+  TrainingPlanDeleteService,
+  TrainingPlanFindManyService,
+  TrainingPlanFindService,
+  TrainingPlanUpdateService,
 } from './services';
 
 @Module({
@@ -14,11 +14,11 @@ import {
   controllers: [TrainingPlanController],
   providers: [
     TrainingPlanAdapter,
-    GetTrainingPlanService,
-    GetManyTrainingPlanService,
-    CreateTrainingPlanService,
-    UpdateTrainingPlanService,
-    DeleteTrainingPlanService,
+    TrainingPlanFindService,
+    TrainingPlanFindManyService,
+    TrainingPlanCreateService,
+    TrainingPlanUpdateService,
+    TrainingPlanDeleteService,
   ],
 })
 export class TrainingPlanModule {}

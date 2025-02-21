@@ -3,7 +3,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TrainingPlan } from '@/prisma/generated/prisma-client';
 
 @Injectable()
-export class DeleteTrainingPlanService {
+export class TrainingPlanDeleteService {
   constructor(private readonly prisma: PrismaService) {}
 
   async handle(id: string): Promise<TrainingPlan> {

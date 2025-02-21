@@ -4,7 +4,7 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { TrainingPlanWithWeeks } from '../contracts';
 
 @Injectable()
-export class GetManyTrainingPlanService {
+export class TrainingPlanFindManyService {
   constructor(private readonly prisma: PrismaService) {}
 
   async handle(): Promise<TrainingPlanWithWeeks[]> {

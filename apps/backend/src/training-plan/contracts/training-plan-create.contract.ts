@@ -6,9 +6,8 @@ import {
   Max,
   MaxLength,
 } from 'class-validator';
-import { ICreateTrainingPlan } from '../contracts';
 
-export class CreateTrainingPlan implements ICreateTrainingPlan {
+export class TrainingPlanCreate {
   @IsString({ message: 'Name must be a string' })
   @IsNotEmpty({ message: 'Name is required' })
   @MaxLength(50, { message: 'Name must be less than 50 characters' })
