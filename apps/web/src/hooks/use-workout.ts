@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Workout } from "@/types";
+import { Workout } from "@/models";
 
 import { WorkoutService } from "@/lib/api/workout/workout.api";
 import { WorkoutPostRequest } from "@/lib/api/workout/workout.api.types";

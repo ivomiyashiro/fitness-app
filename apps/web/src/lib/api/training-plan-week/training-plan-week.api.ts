@@ -1,5 +1,5 @@
 import BaseService from "..";
-import { TrainingPlanWeek } from "@/types";
+import { TrainingPlanWeek } from "@/models";
 import { DeletedResponse, RequestParams } from "../index.types";
 import {
   TrainingPlanWeekPostRequest,

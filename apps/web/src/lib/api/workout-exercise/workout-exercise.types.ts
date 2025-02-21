@@ -1,4 +1,4 @@
-import { Set } from "@/types";
+import { Set } from "@/models";
 
 export type WorkoutExerciseResponse = {
   workoutExerciseId: string;

@@ -1,5 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
+
 import { CONFIG } from "@/config";
+import { toastError } from "@/hooks/use-toast";
+
 import { RequestData, RequestParams } from "./index.types";
 
 const apiClient: AxiosInstance = axios.create({
@@ -12,6 +15,7 @@ const apiClient: AxiosInstance = axios.create({
 apiClient.interceptors.response.use(
   (response: AxiosResponse) => response,
   (error) => {
+    toastError(error.response?.data?.errors || "An error occurred");
     return Promise.reject(error);
   },
 );

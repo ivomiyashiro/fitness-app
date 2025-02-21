@@ -4,7 +4,6 @@ import { CalendarIcon } from "lucide-react";
 import { useTrainingPlanWeek } from "@/hooks/use-training-plan-week";
 
 import { PageLayout } from "@/components/layouts/page/page.layout";
-import { AppFallback } from "@/components/ui/app-fallback";
 import { List, ListItem } from "@/components/ui/list";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 
@@ -14,7 +13,7 @@ const TrainingPlanWeeksPage = () => {
   const navigate = useNavigate();
   const { trainingPlanId } = useParams();
 
-  const { data: trainingPlanWeeks, isLoading } = useTrainingPlanWeek({
+  const { data: trainingPlanWeeks } = useTrainingPlanWeek({
     trainingPlanId,
   });
 
@@ -26,10 +25,6 @@ const TrainingPlanWeeksPage = () => {
     handleDeleteTrainingPlan,
     isDrawerOpen,
   } = useTrainingPlanWeeksPage({ trainingPlanId });
-
-  if (isLoading) {
-    return <AppFallback />;
-  }
 
   return (
     <PageLayout title="Training Plan Weeks" showPrevPage={true}>

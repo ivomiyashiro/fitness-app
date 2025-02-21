@@ -1,4 +1,4 @@
-import { Exercise } from "@/types";
+import { Exercise } from "@/models";
 import { Combobox } from "@/components/ui/combobox";
 import { useExerciseCombobox } from "./exercise-combobox.hook";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Workout } from "@/types";
+import { Workout } from "@/models";
 import { useWorkoutDelete } from "@/hooks/use-workout";
 import { WorkoutFormSchema } from "./workouts-form.hook";
 

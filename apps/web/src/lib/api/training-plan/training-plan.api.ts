@@ -1,11 +1,10 @@
 import BaseService from "..";
-import { TrainingPlan } from "@/types";
+import { TrainingPlan } from "@/models";
 import {
   TrainingPlanPostRequest,
   TrainingPlanPutRequest,
   TrainingPlanResponse,
-} from "./training-plan.api.types";
-import { WorkoutResponse } from "../workout/workout.api.types";
+} from "./training-plan.api.contracts";
 import { DeletedResponse, RequestParams } from "../index.types";
 
 class Service {
@@ -16,30 +15,34 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: RequestParams) {
-    return this.baseService.get<TrainingPlanResponse[]>(this.endpoint, params);
+  public get(params?: RequestParams): Promise<TrainingPlan[]> {
+    const result = this.baseService.get<TrainingPlanResponse[]>(
+      this.endpoint,
+      params,
+    );
+
+    return result;
   }
 
-  public post(data: TrainingPlanPostRequest) {
+  public post(data: TrainingPlanPostRequest): Promise<TrainingPlan> {
     return this.baseService.post<TrainingPlanResponse>(this.endpoint, data);
   }
 
-  public put(data: TrainingPlanPutRequest) {
+  public put(
+    trainingPlanId: TrainingPlan["trainingPlanId"],
+    data: TrainingPlanPutRequest,
+  ): Promise<TrainingPlan> {
     return this.baseService.put<TrainingPlanResponse>(
-      `${this.endpoint}/${data.trainingPlanId}`,
+      `${this.endpoint}/${trainingPlanId}`,
       data,
     );
   }
 
-  public delete(trainingPlanId: TrainingPlan["trainingPlanId"]) {
+  public delete(
+    trainingPlanId: TrainingPlan["trainingPlanId"],
+  ): Promise<DeletedResponse> {
     return this.baseService.delete<DeletedResponse>(
       `${this.endpoint}/${trainingPlanId}`,
-    );
-  }
-
-  public getWorkouts(trainingPlanId: TrainingPlan["trainingPlanId"]) {
-    return this.baseService.get<WorkoutResponse>(
-      `${this.endpoint}/${trainingPlanId}/workouts`,
     );
   }
 }

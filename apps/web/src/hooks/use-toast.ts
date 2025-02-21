@@ -5,7 +5,7 @@ import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
-const TOAST_LIMIT = 1;
+const TOAST_LIMIT = 3;
 const TOAST_REMOVE_DELAY = 1000000;
 
 type ToasterToast = ToastProps & {
@@ -169,6 +169,30 @@ function toast({ ...props }: Toast) {
   };
 }
 
+function toastError(errors: string[] | string) {
+  if (typeof errors === "string") {
+    toast({
+      title: "Error",
+      description: errors,
+      variant: "destructive",
+    });
+
+    return;
+  }
+
+  for (let index = 0; index < errors.length; index++) {
+    const errorMessage = errors[index];
+    const title =
+      errors.length > 1 ? `Errors ${index + 1} of ${errors.length}` : "Error";
+
+    toast({
+      title,
+      description: errorMessage,
+      variant: "destructive",
+    });
+  }
+}
+
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState);
 
@@ -189,4 +213,4 @@ function useToast() {
   };
 }
 
-export { useToast, toast };
+export { useToast, toast, toastError };

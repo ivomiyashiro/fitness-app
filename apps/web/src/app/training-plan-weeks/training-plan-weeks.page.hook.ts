@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TrainingPlanWeek } from "@/types";
+import { TrainingPlanWeek } from "@/models";
 import {
   useTrainingPlanWeekDelete,
   useTrainingPlanWeekPost,

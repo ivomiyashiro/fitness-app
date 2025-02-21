@@ -10,38 +10,34 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import {
-  TrainingPlanFormScheme,
-  useTrainingPlanForm,
-} from "./training-plans-form.hook";
+import { TrainingPlanFormData } from "./training-plans.page.hook";
+import { useTrainingPlanForm } from "./training-plans-form.hook";
 
 export const TrainingPlanForm = ({
   defaultValues,
   open,
   title,
-  trainingPlanId,
   onClose,
 }: {
-  defaultValues: TrainingPlanFormScheme;
+  defaultValues: TrainingPlanFormData;
   open: boolean;
   title: string;
-  trainingPlanId: string;
   onClose: () => void;
 }) => {
   const { form, isLoading, onSubmit } = useTrainingPlanForm({
-    trainingPlanId: trainingPlanId,
     defaultValues,
+    onClose,
   });
 
   return (
     <DrawerForm
       form={form}
       open={open}
-      onClose={onClose}
-      onSubmit={() => {
-        form.handleSubmit(onSubmit);
+      onClose={() => {
+        form.reset();
         onClose();
       }}
+      onSubmit={form.handleSubmit(onSubmit)}
     >
       <DrawerHeader>
         <DrawerTitle>{title}</DrawerTitle>
@@ -74,7 +70,7 @@ export const TrainingPlanForm = ({
               <FormControl>
                 <Input
                   className="mt-2"
-                  placeholder="Description..."
+                  placeholder="Best push day ever..."
                   {...field}
                 />
               </FormControl>
@@ -82,7 +78,29 @@ export const TrainingPlanForm = ({
             </FormItem>
           )}
         />
-        <Button>{isLoading ? "Saving..." : "Save"}</Button>
+        {!defaultValues.trainingPlanId && (
+          <FormField
+            control={form.control}
+            name="weeks"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Weeks</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    className="mt-2"
+                    placeholder="Weeks..."
+                    min={1}
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        )}
+        <Button disabled={isLoading}>{isLoading ? "Saving..." : "Save"}</Button>
       </div>
     </DrawerForm>
   );

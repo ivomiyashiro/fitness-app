@@ -12,47 +12,60 @@ import {
   TrainingPlanPutScheme,
 } from "@/lib/schemes/training-plan.schemes";
 
-export type TrainingPlanFormScheme =
+import { TrainingPlanFormData } from "./training-plans.page.hook";
+
+type TrianingPlanFormScheme =
   | z.infer<typeof TrainingPlanPutScheme>
   | z.infer<typeof TrainingPlanPostScheme>;
 
 export const useTrainingPlanForm = ({
   defaultValues,
-  trainingPlanId,
+  onClose,
 }: {
-  trainingPlanId: string;
-  defaultValues: TrainingPlanFormScheme;
+  defaultValues: TrainingPlanFormData;
+  onClose: () => void;
 }) => {
-  const { mutate: updateTrainingPlan, isPending: isUpdatePending } =
-    useTrainingPlanPut();
-  const { mutate: createTrainingPlan, isPending: isCreatePending } =
-    useTrainingPlanPost();
-
-  const form = useForm<TrainingPlanFormScheme>({
-    resolver: defaultValues
+  const form = useForm<TrianingPlanFormScheme>({
+    resolver: defaultValues.trainingPlanId
       ? zodResolver(TrainingPlanPutScheme)
       : zodResolver(TrainingPlanPostScheme),
     values: defaultValues,
   });
 
-  const onSubmit = (data: TrainingPlanFormScheme) => {
-    if (defaultValues) {
+  const handleSuccess = () => {
+    form.reset({
+      description: "",
+      name: "",
+    });
+    onClose();
+  };
+
+  const { mutate: updateTrainingPlan, isPending: isUpdatePending } =
+    useTrainingPlanPut({
+      onSuccess: handleSuccess,
+    });
+  const { mutate: createTrainingPlan, isPending: isCreatePending } =
+    useTrainingPlanPost({
+      onSuccess: handleSuccess,
+    });
+
+  const onSubmit = async (data: TrianingPlanFormScheme) => {
+    if (defaultValues.trainingPlanId) {
       updateTrainingPlan({
-        trainingPlanId,
-        name: data.name,
-        description: data.description,
+        trainingPlanId: (data as z.infer<typeof TrainingPlanPutScheme>)
+          .trainingPlanId,
+        data: {
+          name: data.name,
+          description: data.description,
+        },
       });
     } else {
       createTrainingPlan({
         name: data.name,
         description: data.description,
+        weeks: (data as z.infer<typeof TrainingPlanPostScheme>).weeks,
       });
     }
-
-    form.reset({
-      description: "",
-      name: "",
-    });
   };
 
   return {

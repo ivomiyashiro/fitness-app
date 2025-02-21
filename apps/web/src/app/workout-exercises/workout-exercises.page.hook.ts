@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { WorkoutExercise } from "@/types";
+import { WorkoutExercise } from "@/models";
 import { WorkoutExerciseFormSchema } from "./workout-exercises-form.hook";
 
 export const useWorkoutExercisesPageForm = ({

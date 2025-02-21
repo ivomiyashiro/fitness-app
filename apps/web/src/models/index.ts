@@ -1,7 +1,8 @@
 export type TrainingPlan = {
   trainingPlanId: string;
-  description: string;
   name: string;
+  description: string;
+  trainingPlanWeeks: TrainingPlanWeek[];
 };
 
 export type TrainingPlanWeek = {

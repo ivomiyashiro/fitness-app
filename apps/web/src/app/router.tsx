@@ -48,14 +48,14 @@ const createAppRouter = (queryClient: QueryClient) => {
               convert(queryClient),
             ),
         },
-        // {
-        //   path: "/training-plans/:trainingPlanId/weeks",
-        //   hydrateFallbackElement: <AppFallback />,
-        //   lazy: () =>
-        //     import("./training-plan-weeks/training-plan-weeks.page").then(
-        //       convert(queryClient),
-        //     ),
-        // },
+        {
+          path: "/training-plans/:trainingPlanId/weeks",
+          hydrateFallbackElement: <AppFallback />,
+          lazy: () =>
+            import("./training-plan-weeks/training-plan-weeks.page").then(
+              convert(queryClient),
+            ),
+        },
         // {
         //   path: "/training-plans/:trainingPlanId/weeks/:trainingPlanWeekId/workouts",
         //   hydrateFallbackElement: <AppFallback />,

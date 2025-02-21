@@ -13,5 +13,7 @@ export type RequestData = {
 };
 
 export type DeletedResponse = {
-  deleted: boolean;
+  message: string;
+  timestamp: string;
+  path: string;
 };

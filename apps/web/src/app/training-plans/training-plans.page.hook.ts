@@ -1,47 +1,52 @@
 import { useState } from "react";
-import { TrainingPlan } from "@/types";
+
+import { useTrainingPlanDelete } from "@/hooks/use-training-plan";
+
+import {
+  TrainingPlanPostRequest,
+  TrainingPlanPutRequest,
+} from "@/lib/api/training-plan/training-plan.api.contracts";
+
+export type TrainingPlanFormData = TrainingPlanPostRequest &
+  TrainingPlanPutRequest & { trainingPlanId?: string };
 
 export const useTrainingPlansPage = () => {
-  const [formTitle, setFormTitle] = useState("New Training Plan");
+  const { mutate: deleteTrainingPlan } = useTrainingPlanDelete();
 
-  const [isFormOpen, setFormOpen] = useState(false);
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
-  const [trainingPlanId, setTrainingPlanId] = useState("");
-  const [formData, setFormData] = useState({
+  const [isFormOpen, setFormOpen] = useState(false);
+  const [formTitle, setFormTitle] = useState("New Training Plan");
+  const [formData, setFormData] = useState<TrainingPlanFormData>({
+    trainingPlanId: "",
     name: "",
     description: "",
+    weeks: 1,
   });
 
   const resetData = () => {
-    setTrainingPlanId("");
     setFormData({
+      trainingPlanId: "",
       name: "",
       description: "",
+      weeks: 1,
     });
   };
 
   const handleCreateNew = () => {
-    setFormTitle("New Training Plan");
     resetData();
+    setFormTitle("New Training Plan");
     setFormOpen(true);
   };
 
-  const handleUpdateTrainingPlan = (data: TrainingPlan) => {
-    setTrainingPlanId(data.trainingPlanId);
-    setFormData({
-      name: data.name,
-      description: data.description,
-    });
+  const handleUpdateTrainingPlan = (data: TrainingPlanFormData) => {
+    setFormData(data);
     setFormTitle(`Editing ${data.name}`);
     setFormOpen(true);
   };
 
-  const handleDeleteTrainingPlan = (data: TrainingPlan) => {
-    setFormData({
-      name: data.name,
-      description: data.description,
-    });
+  const handleDeleteTrainingPlan = (data: TrainingPlanFormData) => {
+    setFormData(data);
     setDrawerOpen(true);
   };
 
@@ -55,16 +60,22 @@ export const useTrainingPlansPage = () => {
     setDrawerOpen(false);
   };
 
+  const handleConfirmDrawer = () => {
+    if (formData.trainingPlanId) {
+      deleteTrainingPlan(formData.trainingPlanId);
+    }
+  };
+
   return {
     formData,
     formTitle,
     handleCloseDeleteDrawer,
     handleCloseForm,
+    handleConfirmDrawer,
     handleCreateNew,
     handleDeleteTrainingPlan,
     handleUpdateTrainingPlan,
     isDrawerOpen,
     isFormOpen,
-    trainingPlanId,
   };
 };

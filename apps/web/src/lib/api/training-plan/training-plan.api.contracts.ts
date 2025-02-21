@@ -7,10 +7,10 @@ export type TrainingPlanResponse = {
 export type TrainingPlanPostRequest = {
   name: string;
   description?: string;
+  weeks: number;
 };
 
 export type TrainingPlanPutRequest = {
-  trainingPlanId: string;
   name: string;
   description?: string;
 };

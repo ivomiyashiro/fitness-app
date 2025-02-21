@@ -1,13 +1,9 @@
 import { NotepadTextIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 
-import {
-  useTrainingPlan,
-  useTrainingPlanDelete,
-} from "@/hooks/use-training-plan";
+import { useSuspenseTrainingPlan } from "@/hooks/use-training-plan";
 
 import { PageLayout } from "@/components/layouts/page/page.layout";
-import { AppFallback } from "@/components/ui/app-fallback";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { List, ListItem } from "@/components/ui/list";
 
@@ -17,8 +13,7 @@ import { useTrainingPlansPage } from "./training-plans.page.hook";
 const TrainingPlansPage = () => {
   const navigate = useNavigate();
 
-  const { data: trainingPlans, isLoading } = useTrainingPlan();
-  const { mutate: deleteTrainingPlan } = useTrainingPlanDelete();
+  const { data: trainingPlans } = useSuspenseTrainingPlan();
 
   const {
     formData,
@@ -28,14 +23,10 @@ const TrainingPlansPage = () => {
     handleCreateNew,
     handleDeleteTrainingPlan,
     handleUpdateTrainingPlan,
+    handleConfirmDrawer,
     isDrawerOpen,
     isFormOpen,
-    trainingPlanId,
   } = useTrainingPlansPage();
-
-  if (isLoading) {
-    return <AppFallback />;
-  }
 
   return (
     <PageLayout title="Training Plans">
@@ -57,7 +48,6 @@ const TrainingPlansPage = () => {
         ))}
       </List>
       <TrainingPlanForm
-        trainingPlanId={trainingPlanId}
         defaultValues={formData}
         open={isFormOpen}
         title={formTitle}
@@ -67,7 +57,7 @@ const TrainingPlansPage = () => {
         open={isDrawerOpen}
         title={`Are you sure you want to delete ${formData.name}?`}
         onClose={handleCloseDeleteDrawer}
-        onConfirm={() => deleteTrainingPlan(trainingPlanId)}
+        onConfirm={handleConfirmDrawer}
         onCancel={handleCloseDeleteDrawer}
       />
     </PageLayout>
