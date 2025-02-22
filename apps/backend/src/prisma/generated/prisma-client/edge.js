@@ -136,7 +136,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/app/src/prisma/generated/prisma-client",
+      "value": "/Applications/Dev/fitness-app/apps/backend/src/prisma/generated/prisma-client",
       "fromEnvVar": null
     },
     "config": {
@@ -145,12 +145,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "linux-musl-openssl-3.0.x",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/app/src/prisma/schema.prisma",
+    "sourceFilePath": "/Applications/Dev/fitness-app/apps/backend/src/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
