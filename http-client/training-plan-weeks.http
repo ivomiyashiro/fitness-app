@@ -11,6 +11,6 @@ content-type: application/json
 
 ###
 
-DELETE {{BASE_URL}}/training-plan-weeks/f2738c91-b62e-4c2b-92ba-7577ef70d509
+DELETE {{BASE_URL}}/training-plan-weeks/29c9e01d-4e9b-408f-a1ae-4eb0f7592e6d
 
 ###
