@@ -1,5 +1,6 @@
 import { ArgumentsHost, Catch, HttpException, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { CONFIG } from '../config';
 
 const getErrorTitle = (status: number) => {
   switch (status) {
@@ -75,13 +76,22 @@ class ExceptionFilter implements ExceptionFilter {
       `${request.method} ${request.url} ${status} ${JSON.stringify(errors)}`,
     );
 
-    response.status(status).json({
+    const responseBody = {
       type,
       title,
       statusCode: status,
       errors,
       timestamp: new Date().toISOString(),
-    });
+    };
+
+    if (CONFIG.ENVIROMENT === 'development') {
+      response.status(status).json({
+        ...responseBody,
+        exception: exception.message,
+      });
+    }
+
+    response.status(status).json(responseBody);
   }
 }
 
