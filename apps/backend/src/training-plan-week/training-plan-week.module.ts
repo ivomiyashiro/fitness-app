@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { TrainingPlanWeekController } from './training-plan-week.controller';
 import { TrainingPlanWeekAdapter } from './adapters';
 import {
-  CreateTrainingPlanWeekService,
-  DeleteTrainingPlanWeekService,
-  GetTrainingPlanWeekService,
+  TrainingPlanWeekCreateService,
+  TrainingPlanWeekDeleteService,
+  TrainingPlanWeekGetService,
 } from './services';
 
 @Module({
@@ -12,9 +12,9 @@ import {
   controllers: [TrainingPlanWeekController],
   providers: [
     TrainingPlanWeekAdapter,
-    GetTrainingPlanWeekService,
-    CreateTrainingPlanWeekService,
-    DeleteTrainingPlanWeekService,
+    TrainingPlanWeekCreateService,
+    TrainingPlanWeekDeleteService,
+    TrainingPlanWeekGetService,
   ],
 })
 export class TrainingPlanWeekModule {}
