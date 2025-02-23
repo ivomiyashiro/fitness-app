@@ -19,10 +19,10 @@ import { TrainingPlanWeekResponse, TrainingPlanWeekCreate } from './contracts';
 @Controller('training-plan-weeks')
 export class TrainingPlanWeekController {
   constructor(
+    private readonly trainingPlanWeekAdapter: TrainingPlanWeekAdapter,
     private readonly trainingPlanWeekCreateService: TrainingPlanWeekCreateService,
     private readonly trainingPlanWeekDeleteService: TrainingPlanWeekDeleteService,
     private readonly trainingPlanWeekGetService: TrainingPlanWeekGetService,
-    private readonly trainingPlanWeekAdapter: TrainingPlanWeekAdapter,
   ) {}
 
   @Get()
