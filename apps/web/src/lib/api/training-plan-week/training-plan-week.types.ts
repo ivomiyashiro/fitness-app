@@ -1,7 +1,7 @@
 export type TrainingPlanWeekResponse = {
   trainingPlanWeekId: string;
   trainingPlanId: string;
-  name: string;
+  weekNumber: number;
 };
 
 export type TrainingPlanWeekPostRequest = {

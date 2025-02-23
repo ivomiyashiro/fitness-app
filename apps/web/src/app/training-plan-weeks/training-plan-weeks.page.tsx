@@ -1,57 +1,81 @@
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { CalendarIcon } from "lucide-react";
-
-import { useTrainingPlanWeek } from "@/hooks/use-training-plan-week";
 
 import { PageLayout } from "@/components/layouts/page/page.layout";
 import { List, ListItem } from "@/components/ui/list";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 
-import { useTrainingPlanWeeksPage } from "./training-plan-weeks.page.hook";
+import {
+  useCreateDrawer,
+  useDeleteDrawer,
+  useTrainingPlanWeeksPage,
+} from "./training-plan-weeks.page.hook";
 
 const TrainingPlanWeeksPage = () => {
-  const navigate = useNavigate();
   const { trainingPlanId } = useParams();
 
-  const { data: trainingPlanWeeks } = useTrainingPlanWeek({
-    trainingPlanId,
-  });
+  const {
+    handleCloseDelete,
+    handleConfirmDelete,
+    handleDrawerOpenDelete,
+    isDeleteDrawerOpen,
+    isDeleteDrawerPending,
+    selectedTrainingPlanWeek,
+  } = useDeleteDrawer();
 
   const {
-    data,
-    handleCloseDeleteDrawer,
-    handleConfirmDrawer,
-    handleCreateNew,
-    handleDeleteTrainingPlan,
-    isDrawerOpen,
-  } = useTrainingPlanWeeksPage({ trainingPlanId });
+    handleConfirmCreate,
+    handleCloseCreate,
+    handleDrawerOpenCreate,
+    isCreateDrawerOpen,
+    isCreateDrawerPending,
+  } = useCreateDrawer({
+    trainingPlanId: trainingPlanId ?? "",
+  });
+
+  const { trainingPlanWeeks, handleNavigate } = useTrainingPlanWeeksPage({
+    trainingPlanId: trainingPlanId ?? "",
+  });
 
   return (
     <PageLayout title="Training Plan Weeks" showPrevPage={true}>
-      <List allowAdding={true} onAddNew={handleCreateNew}>
-        {trainingPlanWeeks?.map((trainingPlanWeek, index) => (
+      <List
+        allowAdding={true}
+        addButtonText="Add week"
+        onAddNew={handleDrawerOpenCreate}
+      >
+        {trainingPlanWeeks?.map((tpw, index) => (
           <ListItem
-            key={trainingPlanWeek.trainingPlanWeekId ?? index}
+            key={tpw.trainingPlanWeekId ?? index}
             allowDeleting={true}
             allowEditing={false}
-            data={trainingPlanWeek}
-            displayExpr="name"
+            data={tpw}
+            displayExpr="weekNumber"
             itemIcon={CalendarIcon}
-            onDeleteClick={handleDeleteTrainingPlan}
-            onItemClick={() =>
-              navigate(
-                `/training-plans/${trainingPlanId}/weeks/${trainingPlanWeek.trainingPlanWeekId}/workouts`,
-              )
-            }
+            label="Week"
+            onDeleteClick={handleDrawerOpenDelete}
+            onItemClick={handleNavigate}
           />
         ))}
       </List>
       <DrawerDialog
-        open={isDrawerOpen}
-        title={`Are you sure you want to delete ${data?.name}?`}
-        onClose={handleCloseDeleteDrawer}
-        onConfirm={handleConfirmDrawer}
-        onCancel={handleCloseDeleteDrawer}
+        type="destructive"
+        open={isDeleteDrawerOpen}
+        title={`Are you sure you want to delete week ${selectedTrainingPlanWeek?.weekNumber}?`}
+        disabled={isDeleteDrawerPending}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCloseDelete}
+      />
+      <DrawerDialog
+        type="default"
+        open={isCreateDrawerOpen}
+        title={`Are you sure you want to add a new training plan week?`}
+        primaryButtonText="Confirm"
+        disabled={isCreateDrawerPending}
+        onClose={handleCloseCreate}
+        onConfirm={handleConfirmCreate}
+        onCancel={handleCloseCreate}
       />
     </PageLayout>
   );

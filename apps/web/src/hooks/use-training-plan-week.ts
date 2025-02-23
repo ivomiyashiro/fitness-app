@@ -29,22 +29,30 @@ export const useTrainingPlanWeek = ({
   });
 };
 
-export const useTrainingPlanWeekPost = () => {
+export const useTrainingPlanWeekPost = ({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: getTrainingPlanWeekQueryKey(),
     mutationFn: (data: TrainingPlanWeekPostRequest) =>
       TrainingPlanWeekService.post(data),
-
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWeekQueryKey(),
       }),
+    onSuccess,
   });
 };
 
-export const useTrainingPlanWeekDelete = () => {
+export const useTrainingPlanWeekDelete = ({
+  onSuccess,
+}: {
+  onSuccess: () => void;
+}) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -55,5 +63,6 @@ export const useTrainingPlanWeekDelete = () => {
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWeekQueryKey(),
       }),
+    onSuccess,
   });
 };

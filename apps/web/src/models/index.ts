@@ -8,7 +8,7 @@ export type TrainingPlan = {
 export type TrainingPlanWeek = {
   trainingPlanWeekId: string;
   trainingPlanId: string;
-  name: string;
+  weekNumber: number;
 };
 
 export type Workout = {

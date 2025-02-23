@@ -8,32 +8,37 @@ import {
 } from "./drawer";
 import { Button } from "./button";
 
-export const DrawerDialog = ({
-  description,
-  onClose,
-  onConfirm,
-  onCancel,
-  open,
-  primaryButtonText = "Delete",
-  secondaryButtonText = "Cancel",
-  showPrimaryButton = true,
-  showSecondaryButton = true,
-  title,
-}: {
+type Props = {
   description?: string;
-  onClose: () => void;
-  onConfirm?: () => void;
-  onCancel?: () => void;
+  disabled?: boolean;
+  onCancel?: (data?: unknown) => void;
+  onClose: (data?: unknown) => void;
+  onConfirm?: (data?: unknown) => void;
   open: boolean;
   primaryButtonText?: string;
   secondaryButtonText?: string;
   showPrimaryButton?: boolean;
   showSecondaryButton?: boolean;
   title: string;
-}) => {
+  type?: "destructive" | "default";
+};
+
+export const DrawerDialog = ({
+  description,
+  disabled = false,
+  onCancel,
+  onClose,
+  onConfirm,
+  open,
+  primaryButtonText = "Delete",
+  secondaryButtonText = "Cancel",
+  showPrimaryButton = true,
+  showSecondaryButton = true,
+  title,
+  type = "default",
+}: Props) => {
   const handlePrimaryButtonClick = () => {
     onConfirm?.();
-    onClose();
   };
 
   const handleSeconaryButtonClick = () => {
@@ -50,12 +55,20 @@ export const DrawerDialog = ({
         <DrawerDescription>{description}</DrawerDescription>
         <DrawerFooter>
           {showPrimaryButton && (
-            <Button variant="destructive" onClick={handlePrimaryButtonClick}>
+            <Button
+              variant={type === "destructive" ? "destructive" : "default"}
+              disabled={disabled}
+              onClick={handlePrimaryButtonClick}
+            >
               {primaryButtonText}
             </Button>
           )}
           {showSecondaryButton && (
-            <Button variant="secondary" onClick={handleSeconaryButtonClick}>
+            <Button
+              variant="secondary"
+              disabled={disabled}
+              onClick={handleSeconaryButtonClick}
+            >
               {secondaryButtonText}
             </Button>
           )}

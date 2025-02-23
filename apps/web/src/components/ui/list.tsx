@@ -8,6 +8,7 @@ import {
 import { useSwipeable } from "react-swipeable";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
+import { Button } from "./button";
 
 // Get nested value from object
 const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
@@ -60,6 +61,7 @@ type ItemProps<T> = {
   allowEditing?: boolean;
   data: T;
   displayExpr?: string;
+  label?: string;
   keyExpr?: string;
   itemIcon?: React.ElementType;
   onItemClick?: (data: T) => void;
@@ -73,6 +75,7 @@ export const ListItem = <T extends Record<string, unknown>>({
   data,
   displayExpr,
   itemIcon: Icon,
+  label,
   onItemClick,
   onEditClick,
   onDeleteClick,
@@ -86,7 +89,7 @@ export const ListItem = <T extends Record<string, unknown>>({
     <li
       tabIndex={0}
       className={cn(
-        "relative flex items-center border-b hover:bg-muted hover:text-muted-foreground",
+        "hover:bg-muted hover:text-muted-foreground relative flex items-center border-b",
       )}
       {...handlers}
     >
@@ -100,7 +103,7 @@ export const ListItem = <T extends Record<string, unknown>>({
       >
         {allowDeleting && (
           <button
-            className="flex w-12 justify-center bg-destructive py-4 text-destructive-foreground"
+            className="bg-destructive text-destructive-foreground flex w-12 justify-center py-4"
             onClick={() => {
               handlerSwiped(false);
               onDeleteClick?.(data);
@@ -111,7 +114,7 @@ export const ListItem = <T extends Record<string, unknown>>({
         )}
         {allowEditing && (
           <button
-            className="flex w-12 justify-center bg-blue-500 py-4 text-destructive-foreground"
+            className="text-destructive-foreground flex w-12 justify-center bg-blue-500 py-4"
             onClick={() => {
               handlerSwiped(false);
               onEditClick?.(data);
@@ -124,8 +127,11 @@ export const ListItem = <T extends Record<string, unknown>>({
           className="flex items-center gap-2 px-4"
           onClick={() => onItemClick?.(data)}
         >
-          {Icon && <Icon className="size-4 text-muted-foreground" />}
-          <p>{displayValue}</p>
+          {Icon && <Icon className="text-muted-foreground size-4" />}
+          <p>
+            {label && <span className="mr-2">{label}</span>}
+            {displayValue}
+          </p>
         </div>
       </div>
       <ChevronRightIcon className="absolute right-4 size-4" />
@@ -135,14 +141,15 @@ export const ListItem = <T extends Record<string, unknown>>({
 
 type ListProps = {
   allowAdding?: boolean;
-  addingButtonText?: string;
+  addButtonText?: string;
   className?: string;
+  isPending?: boolean;
   onAddNew?: () => void;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const List = ({
   allowAdding = false,
-  addingButtonText = "Add new",
+  addButtonText = "Add new",
   className,
   children,
   onAddNew,
@@ -150,18 +157,23 @@ export const List = ({
   return (
     <Card
       className={cn(
-        "overflow-hidden border-none outline outline-1 outline-border",
+        "outline-border overflow-hidden border-none outline-1",
         className,
       )}
     >
       <ul>
         {allowAdding && (
           <li
-            className="flex cursor-pointer items-center gap-2 border-b px-4 py-3 text-primary last:border-none hover:bg-muted hover:text-muted-foreground"
+            className="text-primary hover:bg-muted hover:text-muted-foreground border-b last:border-none"
             onClick={() => onAddNew?.()}
           >
-            <PlusIcon className="size-4" />
-            <span>{addingButtonText}</span>
+            <Button
+              variant="ghost"
+              className="flex h-[48px] w-full items-center justify-start gap-2 p-4"
+            >
+              <PlusIcon className="size-4" />
+              <span>{addButtonText}</span>
+            </Button>
           </li>
         )}
         {children}

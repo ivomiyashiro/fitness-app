@@ -54,6 +54,7 @@ const TrainingPlansPage = () => {
         onClose={handleCloseForm}
       />
       <DrawerDialog
+        type="destructive"
         open={isDrawerOpen}
         title={`Are you sure you want to delete ${formData.name}?`}
         onClose={handleCloseDeleteDrawer}
