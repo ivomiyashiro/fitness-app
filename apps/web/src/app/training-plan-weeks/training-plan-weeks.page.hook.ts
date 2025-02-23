@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { TrainingPlanWeek } from "@/models";
 
 import {
-  useTrainingPlanWeek,
+  useSuspenseTrainingPlanWeek,
   useTrainingPlanWeekDelete,
   useTrainingPlanWeekPost,
 } from "@/hooks/use-training-plan-week";
@@ -97,7 +97,7 @@ export const useTrainingPlanWeeksPage = ({
 }) => {
   const navigate = useNavigate();
 
-  const { data: trainingPlanWeeks } = useTrainingPlanWeek({
+  const { data: trainingPlanWeeks } = useSuspenseTrainingPlanWeek({
     trainingPlanId,
   });
 

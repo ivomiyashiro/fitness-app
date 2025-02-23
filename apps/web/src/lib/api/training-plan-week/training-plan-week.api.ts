@@ -14,21 +14,32 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: RequestParams) {
-    return this.baseService.get<TrainingPlanWeekResponse[]>(
+  public get(params?: RequestParams): Promise<TrainingPlanWeek[]> {
+    const result = this.baseService.get<TrainingPlanWeekResponse[]>(
       this.endpoint,
       params,
     );
+
+    return result;
   }
 
-  public post(data: TrainingPlanWeekPostRequest) {
-    return this.baseService.post<TrainingPlanWeekResponse>(this.endpoint, data);
+  public post(data: TrainingPlanWeekPostRequest): Promise<TrainingPlanWeek> {
+    const result = this.baseService.post<TrainingPlanWeekResponse>(
+      this.endpoint,
+      data,
+    );
+
+    return result;
   }
 
-  public delete(trainingPlanWeekId: TrainingPlanWeek["trainingPlanWeekId"]) {
-    return this.baseService.delete<DeletedResponse>(
+  public delete(
+    trainingPlanWeekId: TrainingPlanWeek["trainingPlanWeekId"],
+  ): Promise<DeletedResponse> {
+    const result = this.baseService.delete<DeletedResponse>(
       `${this.endpoint}/${trainingPlanWeekId}`,
     );
+
+    return result;
   }
 }
 

@@ -24,8 +24,8 @@ const TrainingPlanWeeksPage = () => {
   } = useDeleteDrawer();
 
   const {
-    handleConfirmCreate,
     handleCloseCreate,
+    handleConfirmCreate,
     handleDrawerOpenCreate,
     isCreateDrawerOpen,
     isCreateDrawerPending,
