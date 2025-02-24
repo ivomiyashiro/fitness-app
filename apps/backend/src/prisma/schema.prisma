@@ -28,5 +28,19 @@ model TrainingPlanWeek {
   updatedAt          DateTime @updatedAt
 
   // Relations
+  workouts       Workout[]
   trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId], onDelete: Cascade)
 }
+
+model Workout {
+  workoutId String @id @default(uuid())
+  trainingPlanWeekId String
+  name String @unique @db.VarChar(50)
+  order Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  trainingPlanWeek TrainingPlanWeek @relation(fields: [trainingPlanWeekId], references: [trainingPlanWeekId], onDelete: Cascade)
+}
+

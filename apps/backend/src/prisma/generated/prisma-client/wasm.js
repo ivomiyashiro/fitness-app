@@ -133,6 +133,15 @@ exports.Prisma.TrainingPlanWeekScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WorkoutScalarFieldEnum = {
+  workoutId: 'workoutId',
+  trainingPlanWeekId: 'trainingPlanWeekId',
+  name: 'name',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -151,7 +160,8 @@ exports.Prisma.NullsOrder = {
 
 exports.Prisma.ModelName = {
   TrainingPlan: 'TrainingPlan',
-  TrainingPlanWeek: 'TrainingPlanWeek'
+  TrainingPlanWeek: 'TrainingPlanWeek',
+  Workout: 'Workout'
 };
 
 /**
