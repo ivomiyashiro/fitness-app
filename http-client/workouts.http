@@ -1,0 +1,25 @@
+GET {{BASE_URL}}/workouts?trainingPlanWeekId=023540a9-3a9a-44f7-9253-4572f5cfbc73
+
+###
+
+POST {{BASE_URL}}/workouts
+content-type: application/json
+
+{
+  "name": "pepe",
+  "trainingPlanWeekId": "023540a9-3a9a-44f7-9253-4572f5cfbc73"
+}
+
+###
+
+PUT {{BASE_URL}}/workouts/129c18f3-4c0d-495a-8418-4603732cf7e2
+content-type: application/json
+
+{
+  "name": "Test 2 Updated",
+  "order": 1
+}
+
+###
+
+DELETE {{BASE_URL}}/workouts/691aaa3f-9659-44e2-846c-903a71122900
