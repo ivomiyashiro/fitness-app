@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { HttpExceptionFilter } from '@/common/filters';
+import { HttpExceptionFilter, PrismaExceptionFilter } from '@/common/filters';
 import { GlobalValidationPipe } from '@/common/pipes';
 import { CONFIG } from '@/common/config';
 import { AppModule } from '@/app.module';
@@ -13,10 +13,13 @@ async function bootstrap() {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
+
   // Global Prefix
   app.setGlobalPrefix(CONFIG.API.PREFIX);
-  // Global Exception Filter
-  app.useGlobalFilters(HttpExceptionFilter);
+
+  // Global Exception Filters
+  app.useGlobalFilters(HttpExceptionFilter, PrismaExceptionFilter);
+
   // Global ValidationPipe
   app.useGlobalPipes(GlobalValidationPipe);
 
