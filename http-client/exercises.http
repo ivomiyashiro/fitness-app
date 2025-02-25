@@ -1,0 +1,19 @@
+GET {{BASE_URL}}/exercises
+
+###
+
+POST {{BASE_URL}}/exercises/bulk
+Content-Type: application/json
+
+[
+  {
+    "name": "Bench Press"
+  },
+  {
+    "name": "Squat"
+  },
+  {
+    "name": "Deadlift"
+  }
+]
+

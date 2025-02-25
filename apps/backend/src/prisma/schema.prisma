@@ -28,8 +28,8 @@ model TrainingPlanWeek {
   updatedAt          DateTime @updatedAt
 
   // Relations
-  workouts       Workout[]
   trainingPlan   TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId], onDelete: Cascade)
+  workouts       Workout[]
 }
 
 model Workout {
@@ -42,5 +42,28 @@ model Workout {
 
   // Relations
   trainingPlanWeek TrainingPlanWeek @relation(fields: [trainingPlanWeekId], references: [trainingPlanWeekId], onDelete: Cascade)
+  workoutExercises WorkoutExercise[]
+}
+
+model WorkoutExercise {
+  workoutExerciseId String @id @default(uuid())
+  workoutId String
+  exerciseId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  workout Workout @relation(fields: [workoutId], references: [workoutId], onDelete: Cascade)
+  exercise Exercise @relation(fields: [exerciseId], references: [exerciseId], onDelete: Cascade)
+}
+
+model Exercise {
+  exerciseId String @id @default(uuid())
+  name String @unique @db.VarChar(50)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  workoutExercises WorkoutExercise[]
 }
 

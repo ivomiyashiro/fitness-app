@@ -38,22 +38,31 @@ export class WorkoutCreateService {
       );
     }
 
-    const workouts = await this.prismaService.workout.findMany({
-      where: {
-        trainingPlanWeekId: data.trainingPlanWeekId,
-      },
-      select: {
-        order: true,
-      },
-    });
+    return await this.prismaService.$transaction(async (tx) => {
+      await tx.workoutExercise.createMany({
+        data: data.exercises.map((exercise) => ({
+          workoutId: workout.workoutId,
+          exerciseId: exercise.exerciseId,
+        })),
+      });
 
-    const order = workouts.length + 1;
+      const workouts = await tx.workout.findMany({
+        where: {
+          trainingPlanWeekId: data.trainingPlanWeekId,
+        },
+        select: {
+          order: true,
+        },
+      });
 
-    return this.prismaService.workout.create({
-      data: {
-        ...data,
-        order,
-      },
+      const order = workouts.length + 1;
+
+      return tx.workout.create({
+        data: {
+          ...data,
+          order,
+        },
+      });
     });
   }
 }
