@@ -11,6 +11,13 @@ export class WorkoutFindManyService {
       where: {
         trainingPlanWeekId,
       },
+      include: {
+        trainingPlanWeek: {
+          select: {
+            trainingPlanId: true,
+          },
+        },
+      },
       orderBy: {
         order: 'asc',
       },

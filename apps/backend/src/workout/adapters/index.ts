@@ -11,6 +11,7 @@ export class WorkoutAdapter {
       workoutId: workout.workoutId,
       name: workout.name,
       order: workout.order,
+      trainingPlanWeekId: workout.trainingPlanWeekId,
     };
   }
 
