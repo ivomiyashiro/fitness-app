@@ -14,7 +14,7 @@ export const useWorkoutForm = ({
   workoutId,
   defaultValues,
 }: {
-  workoutId: string;
+  workoutId?: string;
   defaultValues: WorkoutFormSchema;
 }) => {
   const { mutate: updateTrainingPlan, isPending: isUpdatePending } =

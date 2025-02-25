@@ -15,8 +15,13 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: RequestParams) {
-    return this.baseService.get<WorkoutResponse[]>(this.endpoint, params);
+  public async get(params?: RequestParams): Promise<Workout[]> {
+    const result = await this.baseService.get<WorkoutResponse[]>(
+      this.endpoint,
+      params,
+    );
+
+    return result;
   }
 
   public post(data: WorkoutPostRequest) {

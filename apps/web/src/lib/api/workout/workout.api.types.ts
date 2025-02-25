@@ -8,10 +8,10 @@ export type WorkoutPostRequest = {
 };
 
 export type WorkoutPutRequest = {
-  workoutId: string;
   trainingPlanWeekId: string;
   name: string;
   order?: number;
+  exercises: ExerciseResponse[];
 };
 
 export type WorkoutResponse = {

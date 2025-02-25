@@ -1,46 +1,40 @@
-import { useNavigate, useParams } from "react-router";
 import { NotepadTextIcon } from "lucide-react";
 
-import { useWorkout } from "@/hooks/use-workout";
-
-import { AppFallback } from "@/components/ui/app-fallback";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { List, ListItem } from "@/components/ui/list";
 import { PageLayout } from "@/components/layouts/page/page.layout";
 
-import { useWorkoutsPage } from "./workouts.page.hook";
+import {
+  useDeleteDrawer,
+  useFormDrawer,
+  useWorkoutsPage,
+} from "./workouts.page.hook";
 import { WorkoutForm } from "./workouts-form";
 
 const WorkoutsPage = () => {
-  const navigate = useNavigate();
-  const { trainingPlanId, trainingPlanWeekId } = useParams();
+  const { workouts, handleNavigate } = useWorkoutsPage();
 
-  const { data: workouts, isLoading } = useWorkout({
-    trainingPlanWeekId,
-  });
+  const {
+    handleCloseDelete,
+    handleConfirmDelete,
+    handleDrawerOpenDelete,
+    isDeleteDrawerOpen,
+    isDeleteDrawerPending,
+    selectedWorkout,
+  } = useDeleteDrawer();
 
   const {
     formData,
     formTitle,
-    handleCloseDeleteDrawer,
     handleCloseForm,
-    handleConfirmDeleteDrawer,
-    handleCreateNew,
-    handleDeleteTrainingPlan,
-    handleUpdateTrainingPlan,
-    isDeletePending,
-    isDrawerOpen,
+    handleCreateWorkout,
+    handleUpdateWorkout,
     isFormOpen,
-    workoutId,
-  } = useWorkoutsPage();
-
-  if (isLoading) {
-    return <AppFallback />;
-  }
+  } = useFormDrawer();
 
   return (
     <PageLayout title="Workouts" showPrevPage={true}>
-      <List allowAdding={true} onAddNew={handleCreateNew}>
+      <List allowAdding={true} onAddNew={handleCreateWorkout}>
         {workouts?.map((workout) => (
           <ListItem
             key={workout.workoutId}
@@ -49,29 +43,25 @@ const WorkoutsPage = () => {
             data={workout}
             displayExpr="name"
             itemIcon={NotepadTextIcon}
-            onDeleteClick={handleDeleteTrainingPlan}
-            onEditClick={handleUpdateTrainingPlan}
-            onItemClick={() =>
-              navigate(
-                `/training-plans/${trainingPlanId}/weeks/${trainingPlanWeekId}/workouts/${workout.workoutId}/exercises`,
-              )
-            }
+            onDeleteClick={handleDrawerOpenDelete}
+            onEditClick={handleUpdateWorkout}
+            onItemClick={handleNavigate}
           />
         ))}
       </List>
       <WorkoutForm
-        workoutId={workoutId}
+        workoutId={selectedWorkout?.workoutId}
         defaultValues={formData}
         open={isFormOpen}
         title={formTitle}
         onClose={handleCloseForm}
       />
       <DrawerDialog
-        open={isDrawerOpen || isDeletePending}
+        open={isDeleteDrawerOpen || isDeleteDrawerPending}
         title={`Are you sure you want to delete ${formData?.name}?`}
-        onClose={handleCloseDeleteDrawer}
-        onConfirm={handleConfirmDeleteDrawer}
-        onCancel={handleCloseDeleteDrawer}
+        onClose={handleCloseDelete}
+        onConfirm={handleConfirmDelete}
+        onCancel={handleCloseDelete}
       />
     </PageLayout>
   );

@@ -1,4 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import { Workout } from "@/models";
 
@@ -11,12 +15,12 @@ export const getTrainingPlanWorkoutsQueryKey = (handle?: string | number) => {
   return ["workout", handle];
 };
 
-export const useWorkout = ({
+export const useSuspenseWorkout = ({
   trainingPlanWeekId,
 }: {
   trainingPlanWeekId?: string;
 }) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: getTrainingPlanWorkoutsQueryKey(),
     queryFn: () => WorkoutService.get({ trainingPlanWeekId }),
   });
@@ -50,7 +54,7 @@ export const useWorkoutPut = () => {
   });
 };
 
-export const useWorkoutDelete = () => {
+export const useWorkoutDelete = ({ onSuccess }: { onSuccess: () => void }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -61,5 +65,6 @@ export const useWorkoutDelete = () => {
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWorkoutsQueryKey(),
       }),
+    onSuccess,
   });
 };

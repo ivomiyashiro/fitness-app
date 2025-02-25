@@ -13,19 +13,21 @@ import { ExerciseCombobox } from "@/components/comboboxes/exercise/exercise-comb
 
 import { useWorkoutForm, WorkoutFormSchema } from "./workouts-form.hook";
 
+type Props = {
+  defaultValues: WorkoutFormSchema;
+  open: boolean;
+  title: string;
+  workoutId?: string;
+  onClose: () => void;
+};
+
 export const WorkoutForm = ({
   defaultValues,
   open,
   title,
   workoutId,
   onClose,
-}: {
-  defaultValues: WorkoutFormSchema;
-  open: boolean;
-  title: string;
-  workoutId: string;
-  onClose: () => void;
-}) => {
+}: Props) => {
   const { form, isLoading, onSubmit } = useWorkoutForm({
     workoutId,
     defaultValues,
