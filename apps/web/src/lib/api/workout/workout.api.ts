@@ -28,9 +28,9 @@ class Service {
     return this.baseService.post<WorkoutResponse>(this.endpoint, data);
   }
 
-  public put(data: WorkoutPutRequest) {
+  public put(workoutId: Workout["workoutId"], data: WorkoutPutRequest) {
     return this.baseService.put<WorkoutResponse>(
-      `${this.endpoint}/${data.workoutId}`,
+      `${this.endpoint}/${workoutId}`,
       data,
     );
   }

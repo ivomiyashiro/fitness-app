@@ -4,38 +4,47 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useWorkoutPost, useWorkoutPut } from "@/hooks/use-workout";
 
-import { WorkoutPostSchema, WorkoutPutSchema } from "./workouts-form.schema";
+import { WorkoutFormSchema } from "./workouts-form.schema";
 
-export type WorkoutFormSchema =
-  | z.infer<typeof WorkoutPutSchema>
-  | z.infer<typeof WorkoutPostSchema>;
+export type WorkoutFormSchema = z.infer<typeof WorkoutFormSchema>;
 
 export const useWorkoutForm = ({
   workoutId,
   defaultValues,
+  onClose,
 }: {
   workoutId?: string;
   defaultValues: WorkoutFormSchema;
+  onClose: () => void;
 }) => {
-  const { mutate: updateTrainingPlan, isPending: isUpdatePending } =
-    useWorkoutPut();
-  const { mutate: createTrainingPlan, isPending: isCreatePending } =
-    useWorkoutPost();
-
   const form = useForm<WorkoutFormSchema>({
-    resolver: workoutId
-      ? zodResolver(WorkoutPutSchema)
-      : zodResolver(WorkoutPostSchema),
+    resolver: zodResolver(WorkoutFormSchema),
     values: defaultValues,
   });
+
+  const handleSuccess = () => {
+    form.reset({
+      name: "",
+      trainingPlanWeekId: "",
+      exercises: [],
+    });
+    onClose();
+  };
+
+  const { mutate: updateTrainingPlan, isPending: isUpdatePending } =
+    useWorkoutPut({ onSuccess: handleSuccess });
+  const { mutate: createTrainingPlan, isPending: isCreatePending } =
+    useWorkoutPost({ onSuccess: handleSuccess });
 
   const onSubmit = (data: WorkoutFormSchema) => {
     if (workoutId) {
       updateTrainingPlan({
-        name: data.name,
-        trainingPlanWeekId: defaultValues.trainingPlanWeekId,
         workoutId: workoutId,
-        exercises: data.exercises,
+        data: {
+          name: data.name,
+          trainingPlanWeekId: defaultValues.trainingPlanWeekId,
+          exercises: data.exercises,
+        },
       });
     } else {
       createTrainingPlan({
@@ -44,12 +53,6 @@ export const useWorkoutForm = ({
         exercises: data.exercises,
       });
     }
-
-    form.reset({
-      name: "",
-      trainingPlanWeekId: "",
-      workoutId: "",
-    });
   };
 
   return {

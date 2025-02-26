@@ -7,7 +7,10 @@ import {
 import { Workout } from "@/models";
 
 import { WorkoutService } from "@/lib/api/workout/workout.api";
-import { WorkoutPostRequest } from "@/lib/api/workout/workout.api.types";
+import {
+  WorkoutPostRequest,
+  WorkoutPutRequest,
+} from "@/lib/api/workout/workout.api.types";
 
 import { getTrainingPlansQueryKey } from "./use-training-plan";
 
@@ -26,7 +29,7 @@ export const useSuspenseWorkout = ({
   });
 };
 
-export const useWorkoutPost = () => {
+export const useWorkoutPost = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -36,25 +39,31 @@ export const useWorkoutPost = () => {
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWorkoutsQueryKey(),
       }),
+    onSuccess: () => onSuccess?.(),
   });
 };
 
-export const useWorkoutPut = () => {
+type WorkoutPutArgs = {
+  workoutId: Workout["workoutId"];
+  data: WorkoutPutRequest;
+};
+
+export const useWorkoutPut = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: getTrainingPlanWorkoutsQueryKey(),
-    mutationFn: (
-      data: WorkoutPostRequest & { workoutId: Workout["workoutId"] },
-    ) => WorkoutService.put(data.workoutId, data),
+    mutationFn: ({ workoutId, data }: WorkoutPutArgs) =>
+      WorkoutService.put(workoutId, data),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWorkoutsQueryKey(),
       }),
+    onSuccess: () => onSuccess?.(),
   });
 };
 
-export const useWorkoutDelete = ({ onSuccess }: { onSuccess: () => void }) => {
+export const useWorkoutDelete = ({ onSuccess }: { onSuccess?: () => void }) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -65,6 +74,6 @@ export const useWorkoutDelete = ({ onSuccess }: { onSuccess: () => void }) => {
       queryClient.invalidateQueries({
         queryKey: getTrainingPlanWorkoutsQueryKey(),
       }),
-    onSuccess,
+    onSuccess: () => onSuccess?.(),
   });
 };

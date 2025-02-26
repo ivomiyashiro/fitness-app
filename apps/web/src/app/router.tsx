@@ -41,6 +41,7 @@ const createAppRouter = (queryClient: QueryClient) => {
       hydrateFallbackElement: <AppFallback />,
       children: [
         {
+          hydrateFallbackElement: <AppFallback />,
           path: "/training-plans",
           lazy: () =>
             import("./training-plans/training-plans.page").then(
@@ -48,6 +49,7 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
+          hydrateFallbackElement: <AppFallback />,
           path: "/training-plans/:trainingPlanId/weeks",
           lazy: () =>
             import("./training-plan-weeks/training-plan-weeks.page").then(
@@ -55,6 +57,7 @@ const createAppRouter = (queryClient: QueryClient) => {
             ),
         },
         {
+          hydrateFallbackElement: <AppFallback />,
           path: "/training-plans/:trainingPlanId/weeks/:trainingPlanWeekId/workouts",
           lazy: () =>
             import("./workouts/workouts.page").then(convert(queryClient)),

@@ -12,7 +12,7 @@ import {
 import { WorkoutForm } from "./workouts-form";
 
 const WorkoutsPage = () => {
-  const { workouts, handleNavigate } = useWorkoutsPage();
+  const { trainingPlanWeekId, workouts, handleNavigate } = useWorkoutsPage();
 
   const {
     handleCloseDelete,
@@ -28,9 +28,11 @@ const WorkoutsPage = () => {
     formTitle,
     handleCloseForm,
     handleCreateWorkout,
-    handleUpdateWorkout,
+    handleEditWorkout,
     isFormOpen,
-  } = useFormDrawer();
+  } = useFormDrawer({
+    trainingPlanWeekId: trainingPlanWeekId,
+  });
 
   return (
     <PageLayout title="Workouts" showPrevPage={true}>
@@ -44,21 +46,23 @@ const WorkoutsPage = () => {
             displayExpr="name"
             itemIcon={NotepadTextIcon}
             onDeleteClick={handleDrawerOpenDelete}
-            onEditClick={handleUpdateWorkout}
+            onEditClick={handleEditWorkout}
             onItemClick={handleNavigate}
           />
         ))}
       </List>
       <WorkoutForm
-        workoutId={selectedWorkout?.workoutId}
+        workoutId={formData?.workoutId}
         defaultValues={formData}
         open={isFormOpen}
         title={formTitle}
         onClose={handleCloseForm}
       />
       <DrawerDialog
-        open={isDeleteDrawerOpen || isDeleteDrawerPending}
-        title={`Are you sure you want to delete ${formData?.name}?`}
+        type="destructive"
+        open={isDeleteDrawerOpen}
+        title={`Are you sure you want to delete ${selectedWorkout?.name}?`}
+        disabled={isDeleteDrawerPending}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
         onCancel={handleCloseDelete}

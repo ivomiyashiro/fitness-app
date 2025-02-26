@@ -31,6 +31,7 @@ export const WorkoutForm = ({
   const { form, isLoading, onSubmit } = useWorkoutForm({
     workoutId,
     defaultValues,
+    onClose,
   });
 
   return (
@@ -38,10 +39,7 @@ export const WorkoutForm = ({
       form={form}
       open={open}
       onClose={onClose}
-      onSubmit={() => {
-        form.handleSubmit(onSubmit);
-        onClose();
-      }}
+      onSubmit={form.handleSubmit(onSubmit)}
     >
       <DrawerHeader>
         <DrawerTitle>{title}</DrawerTitle>
@@ -81,7 +79,7 @@ export const WorkoutForm = ({
             </FormItem>
           )}
         />
-        <Button>{isLoading ? "Saving..." : "Save"}</Button>
+        <Button disabled={isLoading}>{isLoading ? "Saving..." : "Save"}</Button>
       </div>
     </DrawerForm>
   );

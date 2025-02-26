@@ -46,23 +46,25 @@ export const useDeleteDrawer = () => {
   };
 };
 
-export const useFormDrawer = () => {
+export const useFormDrawer = ({
+  trainingPlanWeekId,
+}: {
+  trainingPlanWeekId?: string;
+}) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [formTitle, setFormTitle] = useState("New Training Plan");
-  const [formData, setFormData] = useState<WorkoutFormSchema>({
+  const [formData, setFormData] = useState<
+    WorkoutFormSchema & { workoutId?: Workout["workoutId"] }
+  >({
     name: "",
-    trainingPlanWeekId: "",
-    workoutId: "",
-    order: 0,
+    trainingPlanWeekId: trainingPlanWeekId ?? "",
     exercises: [],
   });
 
   const resetData = () => {
     setFormData({
       name: "",
-      trainingPlanWeekId: "",
-      workoutId: "",
-      order: 0,
+      trainingPlanWeekId: trainingPlanWeekId ?? "",
       exercises: [],
     });
   };
@@ -73,7 +75,7 @@ export const useFormDrawer = () => {
     setFormOpen(true);
   };
 
-  const handleUpdateWorkout = (data: Workout) => {
+  const handleEditWorkout = (data: Workout) => {
     setFormData({
       ...data,
       exercises: toExcerciseArray(data.exercises),
@@ -92,7 +94,7 @@ export const useFormDrawer = () => {
     formTitle,
     handleCloseForm,
     handleCreateWorkout,
-    handleUpdateWorkout,
+    handleEditWorkout,
     isFormOpen,
   };
 };
@@ -113,6 +115,7 @@ export const useWorkoutsPage = () => {
 
   return {
     handleNavigate,
+    trainingPlanWeekId,
     workouts,
   };
 };
