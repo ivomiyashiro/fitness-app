@@ -4,14 +4,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Workout } from '@/prisma/generated/prisma-client';
-import { WorkoutCreate } from '../contracts';
+import { WorkoutCreate, WorkoutServiceResponse } from '../contracts';
 
 @Injectable()
 export class WorkoutCreateService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async handle(data: WorkoutCreate): Promise<Workout> {
+  async handle(data: WorkoutCreate): Promise<WorkoutServiceResponse> {
     const trainingPlanWeek =
       await this.prismaService.trainingPlanWeek.findUnique({
         where: {
@@ -25,27 +24,20 @@ export class WorkoutCreateService {
       );
     }
 
-    const workout = await this.prismaService.workout.findFirst({
+    const workoutWithSameName = await this.prismaService.workout.findFirst({
       where: {
         name: data.name,
         trainingPlanWeekId: data.trainingPlanWeekId,
       },
     });
 
-    if (workout) {
+    if (workoutWithSameName) {
       throw new BadRequestException(
         `Workout with name ${data.name} already exists in this training plan week`,
       );
     }
 
     return await this.prismaService.$transaction(async (tx) => {
-      await tx.workoutExercise.createMany({
-        data: data.exercises.map((exercise) => ({
-          workoutId: workout.workoutId,
-          exerciseId: exercise.exerciseId,
-        })),
-      });
-
       const workouts = await tx.workout.findMany({
         where: {
           trainingPlanWeekId: data.trainingPlanWeekId,
@@ -57,12 +49,47 @@ export class WorkoutCreateService {
 
       const order = workouts.length + 1;
 
-      return tx.workout.create({
+      const workout = await tx.workout.create({
         data: {
-          ...data,
+          name: data.name,
+          trainingPlanWeekId: data.trainingPlanWeekId,
           order,
         },
+        include: {
+          trainingPlanWeek: {
+            select: {
+              trainingPlanWeekId: true,
+            },
+          },
+          workoutExercises: {
+            include: {
+              workout: {
+                select: {
+                  workoutId: true,
+                  name: true,
+                },
+              },
+              exercise: {
+                select: {
+                  exerciseId: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
       });
+
+      // Create workout exercises
+      await tx.workoutExercise.createMany({
+        data: data.exercises.map((exercise, index) => ({
+          workoutId: workout.workoutId,
+          exerciseId: exercise.exerciseId,
+          order: index,
+        })),
+      });
+
+      return workout;
     });
   }
 }

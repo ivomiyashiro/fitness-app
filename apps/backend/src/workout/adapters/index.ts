@@ -1,21 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { Workout } from '@/prisma/generated/prisma-client';
-import { WorkoutResponse } from '../contracts';
+import { WorkoutResponse, WorkoutServiceResponse } from '../contracts';
 
 @Injectable()
 export class WorkoutAdapter {
   constructor() {}
 
-  toResponse(workout: Workout): WorkoutResponse {
+  toResponse(workout: WorkoutServiceResponse): WorkoutResponse {
     return {
       workoutId: workout.workoutId,
       name: workout.name,
       order: workout.order,
       trainingPlanWeekId: workout.trainingPlanWeekId,
+      exercises: workout.workoutExercises.map((workoutExercise) => ({
+        workoutExerciseId: workoutExercise.workoutExerciseId,
+        order: workoutExercise.order,
+        exercise: {
+          exerciseId: workoutExercise.exercise.exerciseId,
+          name: workoutExercise.exercise.name,
+        },
+        workout: {
+          workoutId: workoutExercise.workout.workoutId,
+          name: workoutExercise.workout.name,
+        },
+      })),
     };
   }
 
-  toResponseArray(workouts: Workout[]): WorkoutResponse[] {
+  toResponseArray(workouts: WorkoutServiceResponse[]): WorkoutResponse[] {
     return workouts.map((workout) => this.toResponse(workout));
   }
 }
