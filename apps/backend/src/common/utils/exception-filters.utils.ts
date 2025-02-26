@@ -1,3 +1,5 @@
+import { HttpException } from '@nestjs/common';
+
 const getErrorTitle = (status: number) => {
   switch (status) {
     case 400:
@@ -32,24 +34,32 @@ const getIetfErrorUrl = (status: number) => {
   }
 };
 
-const getErrorMessages = (exception: string | string[]) => {
-  if (typeof exception === 'string') {
-    return [exception];
+type ErrorResponse = {
+  message: string | Record<string, string[]>;
+};
+
+const getErrorMessages = (exception: HttpException): string[] => {
+  const response = exception.getResponse() as string | ErrorResponse;
+
+  if (typeof response === 'string') {
+    return [response];
   }
 
-  // When exception is from class-validator or class-transformer
-  // push all messages to the array and return it
-  const errorMessages: string[] = [];
-  Object.keys(exception).forEach((key) => {
-    if (key !== 'message' || !Array.isArray(exception[key])) return;
+  if (!response || typeof response !== 'object') {
+    return ['Unknown error occurred'];
+  }
 
-    exception[key].forEach((message) => {
-      if (typeof message !== 'string') return;
-      errorMessages.push(message);
-    });
-  });
+  if (!('message' in response)) {
+    return ['Unknown error occurred'];
+  }
 
-  return errorMessages;
+  if (typeof response.message === 'string') {
+    return [response.message];
+  }
+
+  return Object.values(response.message)
+    .flat()
+    .filter((msg): msg is string => typeof msg === 'string');
 };
 
 export { getErrorTitle, getIetfErrorUrl, getErrorMessages };

@@ -18,7 +18,7 @@ class ExceptionFilter implements ExceptionFilter {
 
     const status = exception.getStatus();
 
-    const errors = getErrorMessages(exception.message);
+    const errors = getErrorMessages(exception);
     const type = getIetfErrorUrl(status);
     const title = getErrorTitle(status);
 
