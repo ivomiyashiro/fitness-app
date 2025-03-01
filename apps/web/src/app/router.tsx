@@ -62,14 +62,14 @@ const createAppRouter = (queryClient: QueryClient) => {
           lazy: () =>
             import("./workouts/workouts.page").then(convert(queryClient)),
         },
-        // {
-        //   path: "/training-plans/:trainingPlanId/weeks/:trainingPlanWeekId/workouts/:workoutId/exercises",
-        //   hydrateFallbackElement: <AppFallback />,
-        //   lazy: () =>
-        //     import("./workout-exercises/workout-exercises.page").then(
-        //       convert(queryClient),
-        //     ),
-        // },
+        {
+          path: "/training-plans/:trainingPlanId/weeks/:trainingPlanWeekId/workouts/:workoutId/exercises",
+          hydrateFallbackElement: <AppFallback />,
+          lazy: () =>
+            import("./workout-exercises/workout-exercises.page").then(
+              convert(queryClient),
+            ),
+        },
         {
           path: "*",
           lazy: () =>

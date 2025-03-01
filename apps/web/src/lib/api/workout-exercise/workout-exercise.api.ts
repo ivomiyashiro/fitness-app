@@ -1,8 +1,9 @@
 import { WorkoutExercise } from "@/models";
 import BaseService from "..";
 import {
-  WorkoutExerciseRequest,
+  WorkoutExerciseCreateRequest,
   WorkoutExerciseResponse,
+  WorkoutExerciseUpdateRequest,
 } from "./workout-exercise.types";
 import { RequestParams } from "../index.types";
 
@@ -21,13 +22,13 @@ class Service {
     );
   }
 
-  public post(data: WorkoutExerciseRequest) {
+  public post(data: WorkoutExerciseCreateRequest) {
     return this.baseService.post<WorkoutExerciseResponse>(this.endpoint, data);
   }
 
   public put(
     workoutExerciseId: WorkoutExercise["workoutExerciseId"],
-    data: WorkoutExerciseRequest,
+    data: WorkoutExerciseUpdateRequest,
   ) {
     return this.baseService.put<WorkoutExerciseResponse>(
       `${this.endpoint}/${workoutExerciseId}`,

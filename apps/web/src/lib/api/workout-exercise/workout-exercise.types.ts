@@ -1,5 +1,3 @@
-import { Set } from "@/models";
-
 export type WorkoutExerciseResponse = {
   workoutExerciseId: string;
   order: number;
@@ -11,19 +9,16 @@ export type WorkoutExerciseResponse = {
     workoutId: string;
     name: string;
   };
-  sets: Set[];
+  sets: {
+    setId: string;
+    reps: number;
+    rir: number;
+  }[];
 };
 
-export type WorkoutExerciseRequest = {
-  workout: {
-    workoutId: string;
-    name: string;
-  };
-  exercise: {
-    exerciseId: string;
-    name: string;
-  };
-  order?: number;
+export type WorkoutExerciseCreateRequest = {
+  exerciseId: string;
+  workoutId: string;
   sets: {
     reps: number;
     rir: number;
@@ -31,14 +26,11 @@ export type WorkoutExerciseRequest = {
 };
 
 export type WorkoutExerciseUpdateRequest = {
-  workout: {
-    workoutId: string;
-    name: string;
-  };
-  exercise: {
-    exerciseId: string;
-    name: string;
-  };
+  exerciseId: string;
   order?: number;
-  sets: Set[];
+  sets: {
+    setId: string;
+    reps: number;
+    rir: number;
+  }[];
 };

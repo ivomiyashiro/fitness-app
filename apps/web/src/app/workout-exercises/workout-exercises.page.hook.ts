@@ -1,14 +1,59 @@
 import { useState } from "react";
 import { WorkoutExercise } from "@/models";
-import { WorkoutExerciseFormSchema } from "./workout-exercises-form.hook";
+import {
+  useSuspenseWorkoutExercise,
+  useWorkoutExerciseDelete,
+} from "@/hooks/use-workout-exercise";
+import { WorkoutExerciseFormSchema } from "./workout-exercises-form/workout-exercises-form.hook";
 
-export const useWorkoutExercisesPageForm = ({
+export const useWorkoutExerciseDeleteDrawer = () => {
+  const [isDeleteDrawerOpen, setDeleteDrawerOpen] = useState(false);
+  const [selectedWorkoutExerciseToDelete, setSelectedWorkoutExerciseToDelete] =
+    useState<WorkoutExercise | undefined>(undefined);
+
+  const handleDeleteSuccess = () => {
+    setDeleteDrawerOpen(false);
+    setSelectedWorkoutExerciseToDelete(undefined);
+  };
+
+  const { mutate: deleteWorkoutExercise, isPending: isDeleteDrawerPending } =
+    useWorkoutExerciseDelete({
+      onSuccess: handleDeleteSuccess,
+    });
+
+  const handleDeleteDrawerOpen = (workoutExercise: WorkoutExercise) => {
+    setDeleteDrawerOpen(true);
+    setSelectedWorkoutExerciseToDelete(workoutExercise);
+  };
+
+  const handleDeleteDrawerClose = () => {
+    setDeleteDrawerOpen(false);
+  };
+
+  const handleDeleteDrawerConfirm = () => {
+    deleteWorkoutExercise(
+      selectedWorkoutExerciseToDelete?.workoutExerciseId ?? "",
+    );
+  };
+
+  return {
+    handleDeleteDrawerClose,
+    handleDeleteDrawerConfirm,
+    handleDeleteDrawerOpen,
+    isDeleteDrawerOpen,
+    isDeleteDrawerPending,
+    selectedWorkoutExerciseToDelete,
+  };
+};
+
+export const useWorkoutExerciseFormDrawer = ({
   workoutId,
 }: {
   workoutId?: string;
 }) => {
-  const DEFAULT_TITLE = "New Exercise";
-  const DEFAULT_FORM_DATA: WorkoutExerciseFormSchema = {
+  const INITIAL_TITLE = "New Exercise";
+  const INITIAL_FORM_DATA: WorkoutExerciseFormSchema = {
+    workoutExerciseId: "",
     order: 1,
     exercise: {
       exerciseId: "",
@@ -20,43 +65,61 @@ export const useWorkoutExercisesPageForm = ({
     },
     sets: [
       {
+        setId: "",
         reps: 8,
         rir: 1,
       },
     ],
   };
-  const [isOpen, setOpen] = useState(false);
-  const [title, setTitle] = useState(DEFAULT_TITLE);
-  const [workoutExerciseId, setWorkoutExerciseId] = useState("");
-  const [formData, setFormData] =
-    useState<WorkoutExerciseFormSchema>(DEFAULT_FORM_DATA);
 
-  const handleAddNew = () => {
-    setOpen(true);
-    setTitle(DEFAULT_TITLE);
-    setFormData(DEFAULT_FORM_DATA);
+  const [isWorkoutExerciseFormOpen, setWorkoutExerciseFormOpen] =
+    useState(false);
+  const [workoutExerciseFormTitle, setWorkoutExerciseFormTitle] =
+    useState(INITIAL_TITLE);
+  const [workoutExerciseFormData, setWorkoutExerciseFormData] =
+    useState<WorkoutExerciseFormSchema>(INITIAL_FORM_DATA);
+
+  const resetToInitialData = () => {
+    setWorkoutExerciseFormData(INITIAL_FORM_DATA);
+    setWorkoutExerciseFormTitle(INITIAL_TITLE);
   };
 
   const handleCloseForm = () => {
-    setOpen(false);
-    setTitle(DEFAULT_TITLE);
-    setFormData(DEFAULT_FORM_DATA);
+    setWorkoutExerciseFormOpen(false);
+    resetToInitialData();
   };
 
-  const handleEdit = (data: WorkoutExercise) => {
-    setOpen(true);
-    setTitle(`Editing ${data.exercise.name}`);
-    setWorkoutExerciseId(data.workoutExerciseId);
-    setFormData(data);
+  const handleAddExercise = () => {
+    resetToInitialData();
+    setWorkoutExerciseFormOpen(true);
+  };
+
+  const handleEditExercise = (data: WorkoutExercise) => {
+    setWorkoutExerciseFormTitle(`Editing ${data.exercise.name}`);
+    setWorkoutExerciseFormData(data);
+    setWorkoutExerciseFormOpen(true);
   };
 
   return {
-    formData,
-    handleAddNew,
+    handleAddExercise,
     handleCloseForm,
-    handleEdit,
-    isOpen,
-    title,
-    workoutExerciseId,
+    handleEditExercise,
+    isWorkoutExerciseFormOpen,
+    workoutExerciseFormData,
+    workoutExerciseFormTitle,
+  };
+};
+
+export const useWorkoutExercisesPage = ({
+  workoutId,
+}: {
+  workoutId?: string;
+}) => {
+  const { data: workoutExercises } = useSuspenseWorkoutExercise({
+    workoutId,
+  });
+
+  return {
+    workoutExercises,
   };
 };

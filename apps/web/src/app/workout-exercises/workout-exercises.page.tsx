@@ -3,35 +3,40 @@ import { DumbbellIcon } from "lucide-react";
 
 import { PageLayout } from "@/components/layouts/page/page.layout";
 import { List, ListItem } from "@/components/ui/list";
-import { AppFallback } from "@/components/ui/app-fallback";
+import { DrawerDialog } from "@/components/ui/drawer-dialog";
 
-import { useWorkoutExercisesPageForm } from "./workout-exercises.page.hook";
-import { WorkoutExercisesForm } from "./workout-exercises-form";
-import { useWorkoutExercise } from "@/hooks/use-workout-exercise";
+import {
+  useWorkoutExerciseDeleteDrawer,
+  useWorkoutExerciseFormDrawer,
+  useWorkoutExercisesPage,
+} from "./workout-exercises.page.hook";
+import { WorkoutExercisesForm } from "./workout-exercises-form/workout-exercises-form";
 
 const WorkoutExercisesPage = () => {
   const { workoutId } = useParams();
-  const { data: workoutExercises, isLoading } = useWorkoutExercise({
-    workoutId,
-  });
+  const { workoutExercises } = useWorkoutExercisesPage({ workoutId });
 
   const {
-    formData,
-    handleAddNew,
-    handleCloseForm,
-    handleEdit,
-    isOpen: isFormOpen,
-    title: formTitle,
-    workoutExerciseId,
-  } = useWorkoutExercisesPageForm({ workoutId });
+    handleDeleteDrawerClose,
+    handleDeleteDrawerConfirm,
+    handleDeleteDrawerOpen,
+    isDeleteDrawerOpen,
+    isDeleteDrawerPending,
+    selectedWorkoutExerciseToDelete,
+  } = useWorkoutExerciseDeleteDrawer();
 
-  if (isLoading) {
-    return <AppFallback />;
-  }
+  const {
+    handleAddExercise,
+    handleCloseForm,
+    handleEditExercise,
+    isWorkoutExerciseFormOpen,
+    workoutExerciseFormData,
+    workoutExerciseFormTitle,
+  } = useWorkoutExerciseFormDrawer({ workoutId });
 
   return (
     <PageLayout title="Workout Exercises" showPrevPage={true}>
-      <List allowAdding={true} onAddNew={handleAddNew}>
+      <List allowAdding={true} onAddNew={handleAddExercise}>
         {workoutExercises?.map((workoutExercise) => (
           <ListItem
             key={workoutExercise.workoutExerciseId}
@@ -40,25 +45,25 @@ const WorkoutExercisesPage = () => {
             data={workoutExercise}
             displayExpr="exercise.name"
             itemIcon={DumbbellIcon}
-            // onDeleteClick={handleDeleteTrainingPlan}
-            onItemClick={handleEdit}
+            onDeleteClick={handleDeleteDrawerOpen}
+            onItemClick={handleEditExercise}
           />
         ))}
       </List>
       <WorkoutExercisesForm
-        workoutExerciseId={workoutExerciseId}
-        defaultValues={formData}
-        open={isFormOpen}
-        title={formTitle}
+        defaultValues={workoutExerciseFormData}
+        open={isWorkoutExerciseFormOpen}
+        title={workoutExerciseFormTitle}
         onClose={handleCloseForm}
       />
-      {/* <DrawerDialog
-        open={isDialogOpen || isDeletePending}
-        title={`Are you sure you want to delete ${dialogData.name}?`}
-        onClose={handleCloseDeleteDrawer}
-        onPrimaryButtonClick={() => deleteWorkout(dialogData.workoutId)}
-        onSecondaryButtonClick={handleCloseDeleteDrawer}
-      /> */}
+      <DrawerDialog
+        open={isDeleteDrawerOpen}
+        title={`Are you sure you want to delete ${selectedWorkoutExerciseToDelete?.exercise.name}?`}
+        disabled={isDeleteDrawerPending}
+        onClose={handleDeleteDrawerClose}
+        onConfirm={handleDeleteDrawerConfirm}
+        onCancel={handleDeleteDrawerClose}
+      />
     </PageLayout>
   );
 };

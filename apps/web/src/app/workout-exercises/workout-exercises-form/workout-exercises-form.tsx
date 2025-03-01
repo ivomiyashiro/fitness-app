@@ -15,42 +15,56 @@ import {
   useWorkoutExercisesForm,
   WorkoutExerciseFormSchema,
 } from "./workout-exercises-form.hook";
-import { WorkoutExercisesSetsInput } from "./workout-exercises-sets-input";
+import { WorkoutExercisesSetInputList } from "../workout-excersises-set-input-list/workout-exercises-set-input-list";
+
+type Props = {
+  defaultValues: WorkoutExerciseFormSchema;
+  onClose: () => void;
+  open: boolean;
+  title: string;
+};
 
 export const WorkoutExercisesForm = ({
-  title,
-  open,
   defaultValues,
-  workoutExerciseId,
   onClose,
-}: {
-  title: string;
-  open: boolean;
-  defaultValues: WorkoutExerciseFormSchema;
-  workoutExerciseId?: string;
-  onClose: () => void;
-}) => {
-  const { form, handleResetForm, isLoading, onSubmit } =
+  open,
+  title,
+}: Props) => {
+  const { form, handleResetFormAndClose, isLoading, onSubmit } =
     useWorkoutExercisesForm({
       defaultValues,
       onClose,
-      workoutExerciseId,
     });
 
   return (
     <DrawerForm
       form={form}
       open={open}
-      onClose={() => {
-        handleResetForm();
-        onClose();
-      }}
+      onClose={handleResetFormAndClose}
       onSubmit={form.handleSubmit(onSubmit)}
     >
       <DrawerHeader>
         <DrawerTitle>{title}</DrawerTitle>
       </DrawerHeader>
       <div className="flex flex-col gap-4 p-4">
+        <FormField
+          control={form.control}
+          name="order"
+          render={({ field }) => (
+            <FormItem className="hidden">
+              <FormLabel>Order</FormLabel>
+              <FormControl>
+                <Input
+                  autoFocus={true}
+                  className="mt-2"
+                  placeholder="Order..."
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="exercise.exerciseId"
@@ -76,14 +90,14 @@ export const WorkoutExercisesForm = ({
                     }
                   />
                 </FormControl>
-                <p className="text-[0.8rem] font-medium text-destructive">
+                <p className="text-destructive text-[0.8rem] font-medium">
                   {form.formState.errors?.exercise?.exerciseId?.message}
                 </p>
               </FormItem>
             );
           }}
         />
-        <WorkoutExercisesSetsInput form={form} />
+        <WorkoutExercisesSetInputList form={form} />
         <FormField
           control={form.control}
           name="workout.workoutId"
@@ -102,7 +116,7 @@ export const WorkoutExercisesForm = ({
             </FormItem>
           )}
         />
-        <Button>{isLoading ? "Saving..." : "Save"}</Button>
+        <Button disabled={isLoading}>{isLoading ? "Saving..." : "Save"}</Button>
       </div>
     </DrawerForm>
   );

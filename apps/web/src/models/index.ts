@@ -36,6 +36,7 @@ export type WorkoutExercise = {
     exerciseId: string;
     name: string;
   };
+  sets: Set[];
 };
 
 export type Set = {

@@ -9,7 +9,6 @@ export const WorkoutExerciseCreateSchema = z.object({
     exerciseId: z.string().min(1, { message: "Exercise is required" }),
     name: z.string(),
   }),
-  order: z.coerce.number().optional(),
   sets: z.array(
     z.object({
       reps: z.coerce.number().min(1, { message: "Reps are required" }),
@@ -21,6 +20,7 @@ export const WorkoutExerciseCreateSchema = z.object({
 });
 
 export const WorkoutExerciseUpdateSchema = z.object({
+  workoutExerciseId: z.string(),
   workout: z.object({
     workoutId: z.string(),
     name: z.string(),
