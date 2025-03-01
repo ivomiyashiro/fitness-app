@@ -48,14 +48,19 @@ model Workout {
 model WorkoutExercise {
   workoutExerciseId String   @id @default(uuid())
   workoutId         String
-  order             Int
   exerciseId        String
+  order             Int
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
   // Relations
   workout  Workout  @relation(fields: [workoutId], references: [workoutId], onDelete: Cascade)
   exercise Exercise @relation(fields: [exerciseId], references: [exerciseId], onDelete: Cascade)
+  sets     Set[]
+
+  // Indexes
+  @@index([workoutId])
+  @@index([exerciseId])
 }
 
 model Exercise {
@@ -66,4 +71,17 @@ model Exercise {
 
   // Relations
   workoutExercises WorkoutExercise[]
+}
+
+model Set {
+  setId             String   @id @default(uuid())
+  workoutExerciseId String
+  reps              Int
+  rir               Int
+  order             Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  workoutExercise WorkoutExercise @relation(fields: [workoutExerciseId], references: [workoutExerciseId], onDelete: Cascade)
 }
