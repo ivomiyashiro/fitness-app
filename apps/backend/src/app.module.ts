@@ -5,6 +5,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { TrainingPlanModule } from '@/training-plan/training-plan.module';
 import { TrainingPlanWeekModule } from '@/training-plan-week/training-plan-week.module';
 import { WorkoutModule } from '@/workout/workout.module';
+import { WorkoutExerciseModule } from '@/workout-exercise/workout-exercise.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { WorkoutModule } from '@/workout/workout.module';
     TrainingPlanModule,
     TrainingPlanWeekModule,
     WorkoutModule,
+    WorkoutExerciseModule,
   ],
   providers: [],
 })
