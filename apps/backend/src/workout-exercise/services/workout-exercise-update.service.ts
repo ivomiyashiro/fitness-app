@@ -30,45 +30,73 @@ export class WorkoutExerciseUpdateService {
     const order = workoutExercise.sets.length;
 
     // TODO: Test if sets orders are created and updated correctly
-    return await this.prismaService.workoutExercise.update({
-      where: { workoutExerciseId },
-      data: {
-        sets: {
-          upsert: data.sets.map((set) => ({
-            where: { setId: set.setId },
-            update: { ...set },
-            create: { ...set, order: order + 1 },
+    return await this.prismaService.$transaction(async (ctx) => {
+      const newSets = data.sets.filter((set) => !set.setId);
+      const existingSets = data.sets.filter((set) => set.setId);
+      const existingSetIds = existingSets.map((set) => set.setId);
+
+      // Delete sets that are not in the request
+      await ctx.set.deleteMany({
+        where: {
+          workoutExerciseId,
+          setId: { notIn: existingSetIds },
+        },
+      });
+
+      // Update existing sets that are in the request
+      if (existingSets.length > 0) {
+        await Promise.all(
+          existingSets.map((set) =>
+            ctx.set.update({
+              where: { setId: set.setId },
+              data: { reps: set.reps, rir: set.rir },
+            }),
+          ),
+        );
+      }
+
+      // Create new sets that are in the request
+      if (newSets.length > 0) {
+        await ctx.set.createMany({
+          data: newSets.map((set, index) => ({
+            order: order + index + 1,
+            reps: set.reps,
+            rir: set.rir,
+            workoutExerciseId,
           })),
-          deleteMany: {
-            setId: {
-              notIn: data.sets.map((set) => set.setId),
+        });
+      }
+
+      // Updates workout exercise if exerciseId is provided and returns the updated workout exercise
+      return await ctx.workoutExercise.update({
+        where: { workoutExerciseId },
+        data: {
+          exerciseId: data.exerciseId,
+        },
+        select: {
+          workoutExerciseId: true,
+          order: true,
+          exercise: {
+            select: {
+              exerciseId: true,
+              name: true,
+            },
+          },
+          workout: {
+            select: {
+              workoutId: true,
+              name: true,
+            },
+          },
+          sets: {
+            select: {
+              setId: true,
+              reps: true,
+              rir: true,
             },
           },
         },
-      },
-      select: {
-        workoutExerciseId: true,
-        order: true,
-        exercise: {
-          select: {
-            exerciseId: true,
-            name: true,
-          },
-        },
-        workout: {
-          select: {
-            workoutId: true,
-            name: true,
-          },
-        },
-        sets: {
-          select: {
-            setId: true,
-            reps: true,
-            rir: true,
-          },
-        },
-      },
+      });
     });
   }
 }

@@ -2,6 +2,7 @@ import {
   IsArray,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
@@ -9,9 +10,8 @@ import {
 import { Type } from 'class-transformer';
 
 class Set {
-  @IsNotEmpty({ message: 'Set Id is required' })
+  @IsOptional()
   @IsString({ message: 'Set Id must be a string' })
-  @IsUUID('4', { message: 'Set Id must be a valid UUID' })
   setId: string;
 
   @IsNotEmpty({ message: 'Reps are required' })
