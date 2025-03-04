@@ -1,12 +1,18 @@
 import { useState } from "react";
+
 import { WorkoutExercise } from "@/models";
+
 import {
-  useSuspenseWorkoutExercise,
+  useWorkoutExercise,
   useWorkoutExerciseDelete,
+  WorkoutExerciseQueryKey,
 } from "@/hooks/use-workout-exercise";
+
 import { WorkoutExerciseFormSchema } from "./workout-exercises-form/workout-exercises-form.hook";
 
-export const useWorkoutExerciseDeleteDrawer = () => {
+export const useWorkoutExerciseDeleteDrawer = (
+  queryKey: WorkoutExerciseQueryKey,
+) => {
   const [isDeleteDrawerOpen, setDeleteDrawerOpen] = useState(false);
   const [selectedWorkoutExerciseToDelete, setSelectedWorkoutExerciseToDelete] =
     useState<WorkoutExercise | undefined>(undefined);
@@ -19,6 +25,7 @@ export const useWorkoutExerciseDeleteDrawer = () => {
   const { mutate: deleteWorkoutExercise, isPending: isDeleteDrawerPending } =
     useWorkoutExerciseDelete({
       onSuccess: handleDeleteSuccess,
+      queryKey,
     });
 
   const handleDeleteDrawerOpen = (workoutExercise: WorkoutExercise) => {
@@ -110,16 +117,13 @@ export const useWorkoutExerciseFormDrawer = ({
   };
 };
 
-export const useWorkoutExercisesPage = ({
-  workoutId,
-}: {
-  workoutId?: string;
-}) => {
-  const { data: workoutExercises } = useSuspenseWorkoutExercise({
-    workoutId,
+export const useWorkoutExercisesPage = (queryKey: WorkoutExerciseQueryKey) => {
+  const { data: workoutExercises, isLoading } = useWorkoutExercise({
+    queryKey,
   });
 
   return {
-    workoutExercises,
+    isLoading,
+    workoutExercises: workoutExercises ?? [],
   };
 };

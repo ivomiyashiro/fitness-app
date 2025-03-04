@@ -4,12 +4,16 @@ import { useNavigate } from "react-router";
 import { TrainingPlanWeek } from "@/models";
 
 import {
-  useSuspenseTrainingPlanWeek,
+  useTrainingPlanWeek,
   useTrainingPlanWeekDelete,
   useTrainingPlanWeekPost,
 } from "@/hooks/use-training-plan-week";
 
-export const useDeleteDrawer = () => {
+export const useTrainingPlanWeekDeleteDrawer = ({
+  trainingPlanId,
+}: {
+  trainingPlanId: string;
+}) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [selectedTrainingPlanWeek, setSelectedTrainingPlanWeek] = useState<
     TrainingPlanWeek | undefined
@@ -23,6 +27,7 @@ export const useDeleteDrawer = () => {
   const { mutate: deleteTrainingPlanWeek, isPending } =
     useTrainingPlanWeekDelete({
       onSuccess: handleSuccess,
+      trainingPlanId,
     });
 
   const handleDrawerOpen = (trainingPlanWeek: TrainingPlanWeek) => {
@@ -48,7 +53,7 @@ export const useDeleteDrawer = () => {
   };
 };
 
-export const useCreateDrawer = ({
+export const useTrainingPlanWeekCreateDrawer = ({
   trainingPlanId,
 }: {
   trainingPlanId: string;
@@ -62,6 +67,7 @@ export const useCreateDrawer = ({
   const { mutate: createTrainingPlanWeek, isPending } = useTrainingPlanWeekPost(
     {
       onSuccess: handleSuccess,
+      trainingPlanId,
     },
   );
 
@@ -97,7 +103,7 @@ export const useTrainingPlanWeeksPage = ({
 }) => {
   const navigate = useNavigate();
 
-  const { data: trainingPlanWeeks } = useSuspenseTrainingPlanWeek({
+  const { data: trainingPlanWeeks, isLoading } = useTrainingPlanWeek({
     trainingPlanId,
   });
 
@@ -109,6 +115,7 @@ export const useTrainingPlanWeeksPage = ({
 
   return {
     handleNavigate,
-    trainingPlanWeeks,
+    isLoading,
+    trainingPlanWeeks: trainingPlanWeeks ?? [],
   };
 };

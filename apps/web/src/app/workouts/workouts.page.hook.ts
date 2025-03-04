@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import { Workout } from "@/models";
 
 import { WorkoutFormSchema } from "./workouts-form.hook";
 
 import { toExcerciseArray } from "@/adapters";
-import { useSuspenseWorkout, useWorkoutDelete } from "@/hooks/use-workout";
+import {
+  useWorkout,
+  useWorkoutDelete,
+  WorkoutQueryKey,
+} from "@/hooks/use-workout";
 
-export const useDeleteDrawer = () => {
+export const useWorkoutDeleteDrawer = ({
+  trainingPlanId,
+  trainingPlanWeekId,
+}: WorkoutQueryKey) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<Workout | undefined>(
     undefined,
@@ -20,6 +27,10 @@ export const useDeleteDrawer = () => {
   };
 
   const { mutate: deleteWorkout, isPending } = useWorkoutDelete({
+    queryKey: {
+      trainingPlanId,
+      trainingPlanWeekId,
+    },
     onSuccess: handleSuccess,
   });
 
@@ -46,10 +57,10 @@ export const useDeleteDrawer = () => {
   };
 };
 
-export const useFormDrawer = ({
+export const useWorkoutFormDrawer = ({
   trainingPlanWeekId,
 }: {
-  trainingPlanWeekId?: string;
+  trainingPlanWeekId: string;
 }) => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [formTitle, setFormTitle] = useState("New Training Plan");
@@ -57,14 +68,14 @@ export const useFormDrawer = ({
     WorkoutFormSchema & { workoutId?: Workout["workoutId"] }
   >({
     name: "",
-    trainingPlanWeekId: trainingPlanWeekId ?? "",
+    trainingPlanWeekId: trainingPlanWeekId,
     exercises: [],
   });
 
   const resetData = () => {
     setFormData({
       name: "",
-      trainingPlanWeekId: trainingPlanWeekId ?? "",
+      trainingPlanWeekId: trainingPlanWeekId,
       exercises: [],
     });
   };
@@ -99,12 +110,17 @@ export const useFormDrawer = ({
   };
 };
 
-export const useWorkoutsPage = () => {
+export const useWorkoutsPage = ({
+  trainingPlanId,
+  trainingPlanWeekId,
+}: WorkoutQueryKey) => {
   const navigate = useNavigate();
-  const { trainingPlanId, trainingPlanWeekId } = useParams();
 
-  const { data: workouts } = useSuspenseWorkout({
-    trainingPlanWeekId,
+  const { data: workouts, isLoading } = useWorkout({
+    queryKey: {
+      trainingPlanId,
+      trainingPlanWeekId,
+    },
   });
 
   const handleNavigate = (workout: Workout) => {
@@ -114,8 +130,8 @@ export const useWorkoutsPage = () => {
   };
 
   return {
+    isLoading,
     handleNavigate,
-    trainingPlanWeekId,
     workouts,
   };
 };

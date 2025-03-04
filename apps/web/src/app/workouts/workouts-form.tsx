@@ -1,3 +1,5 @@
+import { WorkoutQueryKey } from "@/hooks/use-workout";
+
 import { DrawerForm } from "@/components/ui/drawer-form";
 import { DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import {
@@ -15,23 +17,26 @@ import { useWorkoutForm, WorkoutFormSchema } from "./workouts-form.hook";
 
 type Props = {
   defaultValues: WorkoutFormSchema;
+  onClose: () => void;
   open: boolean;
+  queryKey: WorkoutQueryKey;
   title: string;
   workoutId?: string;
-  onClose: () => void;
 };
 
 export const WorkoutForm = ({
   defaultValues,
+  onClose,
   open,
+  queryKey,
   title,
   workoutId,
-  onClose,
 }: Props) => {
   const { form, isLoading, onSubmit } = useWorkoutForm({
     workoutId,
     defaultValues,
     onClose,
+    queryKey,
   });
 
   return (

@@ -1,18 +1,33 @@
+import { useParams } from "react-router";
 import { NotepadTextIcon } from "lucide-react";
 
+import { WorkoutQueryKey } from "@/hooks/use-workout";
+
+import { PageLayout } from "@/components/layouts/page/page.layout";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { List, ListItem } from "@/components/ui/list";
-import { PageLayout } from "@/components/layouts/page/page.layout";
+import { AppFallback } from "@/components/ui/app-fallback";
 
 import {
-  useDeleteDrawer,
-  useFormDrawer,
+  useWorkoutDeleteDrawer,
+  useWorkoutFormDrawer,
   useWorkoutsPage,
 } from "./workouts.page.hook";
 import { WorkoutForm } from "./workouts-form";
 
 const WorkoutsPage = () => {
-  const { trainingPlanWeekId, workouts, handleNavigate } = useWorkoutsPage();
+  const { trainingPlanId, trainingPlanWeekId } = useParams();
+
+  if (!trainingPlanId || !trainingPlanWeekId) {
+    throw new Error("Training plan ID and training plan week ID are required");
+  }
+
+  const queryKey: WorkoutQueryKey = {
+    trainingPlanId: trainingPlanId,
+    trainingPlanWeekId: trainingPlanWeekId,
+  };
+
+  const { workouts, handleNavigate, isLoading } = useWorkoutsPage(queryKey);
 
   const {
     handleCloseDelete,
@@ -21,7 +36,7 @@ const WorkoutsPage = () => {
     isDeleteDrawerOpen,
     isDeleteDrawerPending,
     selectedWorkout,
-  } = useDeleteDrawer();
+  } = useWorkoutDeleteDrawer(queryKey);
 
   const {
     formData,
@@ -30,9 +45,13 @@ const WorkoutsPage = () => {
     handleCreateWorkout,
     handleEditWorkout,
     isFormOpen,
-  } = useFormDrawer({
+  } = useWorkoutFormDrawer({
     trainingPlanWeekId: trainingPlanWeekId,
   });
+
+  if (isLoading) {
+    return <AppFallback />;
+  }
 
   return (
     <PageLayout title="Workouts" showPrevPage={true}>
@@ -52,20 +71,20 @@ const WorkoutsPage = () => {
         ))}
       </List>
       <WorkoutForm
-        workoutId={formData?.workoutId}
         defaultValues={formData}
-        open={isFormOpen}
-        title={formTitle}
         onClose={handleCloseForm}
+        open={isFormOpen}
+        queryKey={queryKey}
+        title={formTitle}
+        workoutId={formData?.workoutId}
       />
       <DrawerDialog
-        type="destructive"
-        open={isDeleteDrawerOpen}
-        title={`Are you sure you want to delete ${selectedWorkout?.name}?`}
         disabled={isDeleteDrawerPending}
+        onCancel={handleCloseDelete}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
-        onCancel={handleCloseDelete}
+        open={isDeleteDrawerOpen}
+        title={`Are you sure you want to delete ${selectedWorkout?.name}?`}
       />
     </PageLayout>
   );

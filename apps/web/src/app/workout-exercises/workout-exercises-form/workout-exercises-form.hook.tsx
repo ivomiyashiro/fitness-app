@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useWorkoutExerciseCreate,
   useWorkoutExerciseUpdate,
+  WorkoutExerciseQueryKey,
 } from "@/hooks/use-workout-exercise";
 
 import {
@@ -19,23 +20,31 @@ export type WorkoutExerciseFormSchema = z.infer<
 export const useWorkoutExercisesForm = ({
   defaultValues,
   onClose,
+  queryKey,
 }: {
   defaultValues: WorkoutExerciseFormSchema;
   onClose: () => void;
+  queryKey: WorkoutExerciseQueryKey;
 }) => {
   const handleResetFormAndClose = () => {
     form.reset(defaultValues);
     onClose();
   };
-
+  console.log(defaultValues);
   const handleSuccess = () => {
     handleResetFormAndClose();
   };
 
   const { mutate: updateWorkoutExercise, isPending: isUpdatePending } =
-    useWorkoutExerciseUpdate({ onSuccess: handleSuccess });
+    useWorkoutExerciseUpdate({
+      onSuccess: handleSuccess,
+      queryKey,
+    });
   const { mutate: createWorkoutExercise, isPending: isCreatePending } =
-    useWorkoutExerciseCreate({ onSuccess: handleSuccess });
+    useWorkoutExerciseCreate({
+      onSuccess: handleSuccess,
+      queryKey,
+    });
 
   const form = useForm<WorkoutExerciseFormSchema>({
     resolver: zodResolver(
@@ -56,7 +65,7 @@ export const useWorkoutExercisesForm = ({
         exerciseId: data.exercise.exerciseId,
         order: "order" in data ? data.order : undefined,
         sets: data.sets.map((set) => ({
-          setId: "setId" in set ? set.setId : "",
+          setId: "setId" in set && set.setId ? set.setId : "",
           reps: set.reps,
           rir: set.rir,
         })),

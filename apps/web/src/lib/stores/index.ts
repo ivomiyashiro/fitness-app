@@ -10,6 +10,7 @@ export function createGlobalStore<T>(
     const { data } = useQuery({
       queryKey: queryKey,
       queryFn: () => Promise.resolve(initialData),
+      staleTime: 0,
       refetchInterval: false,
       refetchOnMount: false,
       refetchOnWindowFocus: false,

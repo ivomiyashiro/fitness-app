@@ -2,20 +2,26 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useWorkoutPost, useWorkoutPut } from "@/hooks/use-workout";
+import { WorkoutFormSchema } from "@/lib/schemes/workouts-form.schema";
 
-import { WorkoutFormSchema } from "./workouts-form.schema";
+import {
+  useWorkoutPost,
+  useWorkoutPut,
+  WorkoutQueryKey,
+} from "@/hooks/use-workout";
 
 export type WorkoutFormSchema = z.infer<typeof WorkoutFormSchema>;
 
 export const useWorkoutForm = ({
-  workoutId,
   defaultValues,
   onClose,
+  queryKey,
+  workoutId,
 }: {
-  workoutId?: string;
   defaultValues: WorkoutFormSchema;
   onClose: () => void;
+  queryKey: WorkoutQueryKey;
+  workoutId?: string;
 }) => {
   const form = useForm<WorkoutFormSchema>({
     resolver: zodResolver(WorkoutFormSchema),
@@ -32,9 +38,15 @@ export const useWorkoutForm = ({
   };
 
   const { mutate: updateTrainingPlan, isPending: isUpdatePending } =
-    useWorkoutPut({ onSuccess: handleSuccess });
+    useWorkoutPut({
+      onSuccess: handleSuccess,
+      queryKey,
+    });
   const { mutate: createTrainingPlan, isPending: isCreatePending } =
-    useWorkoutPost({ onSuccess: handleSuccess });
+    useWorkoutPost({
+      onSuccess: handleSuccess,
+      queryKey,
+    });
 
   const onSubmit = (data: WorkoutFormSchema) => {
     if (workoutId) {

@@ -4,15 +4,25 @@ import { CalendarIcon } from "lucide-react";
 import { PageLayout } from "@/components/layouts/page/page.layout";
 import { List, ListItem } from "@/components/ui/list";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
+import { AppFallback } from "@/components/ui/app-fallback";
 
 import {
-  useCreateDrawer,
-  useDeleteDrawer,
+  useTrainingPlanWeekCreateDrawer,
+  useTrainingPlanWeekDeleteDrawer,
   useTrainingPlanWeeksPage,
 } from "./training-plan-weeks.page.hook";
 
 const TrainingPlanWeeksPage = () => {
   const { trainingPlanId } = useParams();
+
+  if (!trainingPlanId) {
+    throw new Error("Training plan Id is required");
+  }
+
+  const { trainingPlanWeeks, handleNavigate, isLoading } =
+    useTrainingPlanWeeksPage({
+      trainingPlanId,
+    });
 
   const {
     handleCloseDelete,
@@ -21,7 +31,9 @@ const TrainingPlanWeeksPage = () => {
     isDeleteDrawerOpen,
     isDeleteDrawerPending,
     selectedTrainingPlanWeek,
-  } = useDeleteDrawer();
+  } = useTrainingPlanWeekDeleteDrawer({
+    trainingPlanId,
+  });
 
   const {
     handleCloseCreate,
@@ -29,13 +41,13 @@ const TrainingPlanWeeksPage = () => {
     handleDrawerOpenCreate,
     isCreateDrawerOpen,
     isCreateDrawerPending,
-  } = useCreateDrawer({
-    trainingPlanId: trainingPlanId ?? "",
+  } = useTrainingPlanWeekCreateDrawer({
+    trainingPlanId,
   });
 
-  const { trainingPlanWeeks, handleNavigate } = useTrainingPlanWeeksPage({
-    trainingPlanId: trainingPlanId ?? "",
-  });
+  if (isLoading) {
+    return <AppFallback />;
+  }
 
   return (
     <PageLayout title="Training Plan Weeks" showPrevPage={true}>
@@ -44,7 +56,7 @@ const TrainingPlanWeeksPage = () => {
         addButtonText="Add week"
         onAddNew={handleDrawerOpenCreate}
       >
-        {trainingPlanWeeks?.map((tpw, index) => (
+        {trainingPlanWeeks.map((tpw, index) => (
           <ListItem
             key={tpw.trainingPlanWeekId ?? index}
             allowDeleting={true}

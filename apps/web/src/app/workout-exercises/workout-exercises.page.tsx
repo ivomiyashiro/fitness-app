@@ -1,9 +1,12 @@
 import { useParams } from "react-router";
 import { DumbbellIcon } from "lucide-react";
 
+import { WorkoutExerciseQueryKey } from "@/hooks/use-workout-exercise";
+
 import { PageLayout } from "@/components/layouts/page/page.layout";
 import { List, ListItem } from "@/components/ui/list";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
+import { AppFallback } from "@/components/ui/app-fallback";
 
 import {
   useWorkoutExerciseDeleteDrawer,
@@ -13,8 +16,21 @@ import {
 import { WorkoutExercisesForm } from "./workout-exercises-form/workout-exercises-form";
 
 const WorkoutExercisesPage = () => {
-  const { workoutId } = useParams();
-  const { workoutExercises } = useWorkoutExercisesPage({ workoutId });
+  const { trainingPlanId, trainingPlanWeekId, workoutId } = useParams();
+
+  if (!trainingPlanId || !trainingPlanWeekId || !workoutId) {
+    throw new Error(
+      "Training plan ID, training plan week ID, and workout ID are required",
+    );
+  }
+
+  const queryKey: WorkoutExerciseQueryKey = {
+    trainingPlanId,
+    trainingPlanWeekId,
+    workoutId,
+  };
+
+  const { workoutExercises, isLoading } = useWorkoutExercisesPage(queryKey);
 
   const {
     handleDeleteDrawerClose,
@@ -23,7 +39,7 @@ const WorkoutExercisesPage = () => {
     isDeleteDrawerOpen,
     isDeleteDrawerPending,
     selectedWorkoutExerciseToDelete,
-  } = useWorkoutExerciseDeleteDrawer();
+  } = useWorkoutExerciseDeleteDrawer(queryKey);
 
   const {
     handleAddExercise,
@@ -33,6 +49,10 @@ const WorkoutExercisesPage = () => {
     workoutExerciseFormData,
     workoutExerciseFormTitle,
   } = useWorkoutExerciseFormDrawer({ workoutId });
+
+  if (isLoading) {
+    return <AppFallback />;
+  }
 
   return (
     <PageLayout title="Workout Exercises" showPrevPage={true}>
@@ -53,6 +73,7 @@ const WorkoutExercisesPage = () => {
       <WorkoutExercisesForm
         defaultValues={workoutExerciseFormData}
         open={isWorkoutExerciseFormOpen}
+        queryKey={queryKey}
         title={workoutExerciseFormTitle}
         onClose={handleCloseForm}
       />

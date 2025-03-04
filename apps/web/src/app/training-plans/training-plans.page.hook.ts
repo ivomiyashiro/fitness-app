@@ -1,20 +1,59 @@
 import { useState } from "react";
-
-import { useTrainingPlanDelete } from "@/hooks/use-training-plan";
+import { useNavigate } from "react-router";
 
 import {
   TrainingPlanPostRequest,
   TrainingPlanPutRequest,
 } from "@/lib/api/training-plan/training-plan.api.contracts";
+import { trainingPlanToFormDataArray } from "@/adapters";
+
+import {
+  useTrainingPlan,
+  useTrainingPlanDelete,
+} from "@/hooks/use-training-plan";
 
 export type TrainingPlanFormData = TrainingPlanPostRequest &
   TrainingPlanPutRequest & { trainingPlanId?: string };
 
-export const useTrainingPlansPage = () => {
-  const { mutate: deleteTrainingPlan } = useTrainingPlanDelete();
+export const useTrainingPlanDeleteDrawer = () => {
+  const [isDeleteDrawerOpen, setDeleteDrawerOpen] = useState(false);
+  const [selectedTrainingPlanToDelete, setSelectedTrainingPlanToDelete] =
+    useState<TrainingPlanFormData | undefined>(undefined);
 
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const handleDeleteSuccess = () => {
+    setDeleteDrawerOpen(false);
+    setSelectedTrainingPlanToDelete(undefined);
+  };
 
+  const { mutate: deleteTrainingPlan, isPending: isDeleteDrawerPending } =
+    useTrainingPlanDelete({
+      onSuccess: handleDeleteSuccess,
+    });
+
+  const handleDeleteDrawerOpen = (trainingPlan: TrainingPlanFormData) => {
+    setDeleteDrawerOpen(true);
+    setSelectedTrainingPlanToDelete(trainingPlan);
+  };
+
+  const handleDeleteDrawerClose = () => {
+    setDeleteDrawerOpen(false);
+  };
+
+  const handleDeleteDrawerConfirm = () => {
+    deleteTrainingPlan(selectedTrainingPlanToDelete?.trainingPlanId ?? "");
+  };
+
+  return {
+    handleDeleteDrawerClose,
+    handleDeleteDrawerConfirm,
+    handleDeleteDrawerOpen,
+    isDeleteDrawerOpen,
+    isDeleteDrawerPending,
+    selectedTrainingPlanToDelete,
+  };
+};
+
+export const useTrainingPlanFormDrawer = () => {
   const [isFormOpen, setFormOpen] = useState(false);
   const [formTitle, setFormTitle] = useState("New Training Plan");
   const [formData, setFormData] = useState<TrainingPlanFormData>({
@@ -45,37 +84,34 @@ export const useTrainingPlansPage = () => {
     setFormOpen(true);
   };
 
-  const handleDeleteTrainingPlan = (data: TrainingPlanFormData) => {
-    setFormData(data);
-    setDrawerOpen(true);
-  };
-
   const handleCloseForm = () => {
     setFormOpen(false);
     resetData();
   };
 
-  const handleCloseDeleteDrawer = () => {
-    resetData();
-    setDrawerOpen(false);
+  return {
+    formData,
+    formTitle,
+    handleCloseForm,
+    handleCreateNew,
+    handleUpdateTrainingPlan,
+    isFormOpen,
   };
+};
 
-  const handleConfirmDrawer = () => {
-    if (formData.trainingPlanId) {
-      deleteTrainingPlan(formData.trainingPlanId);
+export const useTrainingPlansPage = () => {
+  const navigate = useNavigate();
+  const { data: trainingPlans, isLoading } = useTrainingPlan();
+
+  const handleNavigate = (trainingPlan: TrainingPlanFormData) => {
+    if (trainingPlan.trainingPlanId) {
+      navigate(`/training-plans/${trainingPlan.trainingPlanId}/weeks`);
     }
   };
 
   return {
-    formData,
-    formTitle,
-    handleCloseDeleteDrawer,
-    handleCloseForm,
-    handleConfirmDrawer,
-    handleCreateNew,
-    handleDeleteTrainingPlan,
-    handleUpdateTrainingPlan,
-    isDrawerOpen,
-    isFormOpen,
+    handleNavigate,
+    isLoading,
+    trainingPlans: trainingPlanToFormDataArray(trainingPlans ?? []),
   };
 };
