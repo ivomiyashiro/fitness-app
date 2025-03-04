@@ -118,12 +118,12 @@ export const useWorkoutExerciseFormDrawer = ({
 };
 
 export const useWorkoutExercisesPage = (queryKey: WorkoutExerciseQueryKey) => {
-  const { data: workoutExercises, isLoading } = useWorkoutExercise({
+  const { data: workoutExercises, isFetching } = useWorkoutExercise({
     queryKey,
   });
 
   return {
-    isLoading,
+    isFetching,
     workoutExercises: workoutExercises ?? [],
   };
 };

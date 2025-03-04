@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { Workout } from "@/models";
+import { TrainingPlan, TrainingPlanWeek, Workout } from "@/models";
 
 import { WorkoutService } from "@/lib/api/workout/workout.api";
 import {
@@ -11,8 +11,8 @@ import {
 import { getTrainingPlansQueryKey } from "./use-training-plan";
 
 export type WorkoutQueryKey = {
-  trainingPlanId: string;
-  trainingPlanWeekId: string;
+  trainingPlanId: TrainingPlan["trainingPlanId"];
+  trainingPlanWeekId: TrainingPlanWeek["trainingPlanWeekId"];
 };
 
 export const useWorkout = ({ queryKey }: { queryKey: WorkoutQueryKey }) => {
@@ -43,11 +43,6 @@ export const useWorkoutPost = ({
   });
 };
 
-type WorkoutPutArgs = {
-  workoutId: Workout["workoutId"];
-  data: WorkoutPutRequest;
-};
-
 export const useWorkoutPut = ({
   queryKey,
   onSuccess,
@@ -59,8 +54,13 @@ export const useWorkoutPut = ({
 
   return useMutation({
     mutationKey: getTrainingPlansQueryKey(queryKey),
-    mutationFn: ({ workoutId, data }: WorkoutPutArgs) =>
-      WorkoutService.put(workoutId, data),
+    mutationFn: ({
+      workoutId,
+      data,
+    }: {
+      workoutId: Workout["workoutId"];
+      data: WorkoutPutRequest;
+    }) => WorkoutService.put(workoutId, data),
     onSettled: () =>
       queryClient.invalidateQueries({
         queryKey: getTrainingPlansQueryKey(queryKey),

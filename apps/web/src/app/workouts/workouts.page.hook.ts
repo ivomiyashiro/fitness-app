@@ -116,7 +116,7 @@ export const useWorkoutsPage = ({
 }: WorkoutQueryKey) => {
   const navigate = useNavigate();
 
-  const { data: workouts, isLoading } = useWorkout({
+  const { data: workouts, isFetching } = useWorkout({
     queryKey: {
       trainingPlanId,
       trainingPlanWeekId,
@@ -130,8 +130,8 @@ export const useWorkoutsPage = ({
   };
 
   return {
-    isLoading,
     handleNavigate,
+    isFetching,
     workouts,
   };
 };

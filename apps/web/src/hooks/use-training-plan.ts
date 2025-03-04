@@ -17,7 +17,12 @@ export const getTrainingPlansQueryKey = ({
   trainingPlanWeekId?: string;
   workoutId?: string;
 }) => {
-  return ["training-plan", trainingPlanId, trainingPlanWeekId, workoutId];
+  return [
+    "training-plan",
+    trainingPlanId,
+    trainingPlanWeekId,
+    workoutId,
+  ].filter((key) => key !== undefined);
 };
 
 export const useTrainingPlan = () => {

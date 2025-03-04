@@ -30,7 +30,7 @@ const WorkoutExercisesPage = () => {
     workoutId,
   };
 
-  const { workoutExercises, isLoading } = useWorkoutExercisesPage(queryKey);
+  const { workoutExercises, isFetching } = useWorkoutExercisesPage(queryKey);
 
   const {
     handleDeleteDrawerClose,
@@ -50,7 +50,7 @@ const WorkoutExercisesPage = () => {
     workoutExerciseFormTitle,
   } = useWorkoutExerciseFormDrawer({ workoutId });
 
-  if (isLoading) {
+  if (isFetching) {
     return <AppFallback />;
   }
 

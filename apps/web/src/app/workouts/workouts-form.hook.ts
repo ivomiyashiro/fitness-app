@@ -2,6 +2,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Workout } from "@/models";
+
 import { WorkoutFormSchema } from "@/lib/schemes/workouts-form.schema";
 
 import {
@@ -21,7 +23,7 @@ export const useWorkoutForm = ({
   defaultValues: WorkoutFormSchema;
   onClose: () => void;
   queryKey: WorkoutQueryKey;
-  workoutId?: string;
+  workoutId?: Workout["workoutId"];
 }) => {
   const form = useForm<WorkoutFormSchema>({
     resolver: zodResolver(WorkoutFormSchema),

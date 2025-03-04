@@ -30,7 +30,7 @@ export const useWorkoutExercisesForm = ({
     form.reset(defaultValues);
     onClose();
   };
-  console.log(defaultValues);
+
   const handleSuccess = () => {
     handleResetFormAndClose();
   };

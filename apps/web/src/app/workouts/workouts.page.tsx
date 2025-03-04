@@ -27,7 +27,7 @@ const WorkoutsPage = () => {
     trainingPlanWeekId: trainingPlanWeekId,
   };
 
-  const { workouts, handleNavigate, isLoading } = useWorkoutsPage(queryKey);
+  const { workouts, handleNavigate, isFetching } = useWorkoutsPage(queryKey);
 
   const {
     handleCloseDelete,
@@ -49,7 +49,7 @@ const WorkoutsPage = () => {
     trainingPlanWeekId: trainingPlanWeekId,
   });
 
-  if (isLoading) {
+  if (isFetching) {
     return <AppFallback />;
   }
 
