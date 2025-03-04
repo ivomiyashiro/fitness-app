@@ -101,7 +101,7 @@ export const useTrainingPlanFormDrawer = () => {
 
 export const useTrainingPlansPage = () => {
   const navigate = useNavigate();
-  const { data: trainingPlans, isLoading } = useTrainingPlan();
+  const { data: trainingPlans, isFetching } = useTrainingPlan();
 
   const handleNavigate = (trainingPlan: TrainingPlanFormData) => {
     if (trainingPlan.trainingPlanId) {
@@ -111,7 +111,7 @@ export const useTrainingPlansPage = () => {
 
   return {
     handleNavigate,
-    isLoading,
+    isFetching,
     trainingPlans: trainingPlanToFormDataArray(trainingPlans ?? []),
   };
 };

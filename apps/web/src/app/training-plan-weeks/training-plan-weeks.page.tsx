@@ -19,7 +19,7 @@ const TrainingPlanWeeksPage = () => {
     throw new Error("Training plan Id is required");
   }
 
-  const { trainingPlanWeeks, handleNavigate, isLoading } =
+  const { trainingPlanWeeks, handleNavigate, isFetching } =
     useTrainingPlanWeeksPage({
       trainingPlanId,
     });
@@ -45,7 +45,7 @@ const TrainingPlanWeeksPage = () => {
     trainingPlanId,
   });
 
-  if (isLoading) {
+  if (isFetching) {
     return <AppFallback />;
   }
 

@@ -13,7 +13,7 @@ import { TrainingPlanForm } from "./training-plans-form";
 import { AppFallback } from "@/components/ui/app-fallback";
 
 const TrainingPlansPage = () => {
-  const { handleNavigate, trainingPlans, isLoading } = useTrainingPlansPage();
+  const { handleNavigate, trainingPlans, isFetching } = useTrainingPlansPage();
 
   const {
     handleDeleteDrawerClose,
@@ -33,7 +33,7 @@ const TrainingPlansPage = () => {
     isFormOpen,
   } = useTrainingPlanFormDrawer();
 
-  if (isLoading) {
+  if (isFetching) {
     return <AppFallback />;
   }
 

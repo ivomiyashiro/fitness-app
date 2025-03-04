@@ -103,7 +103,7 @@ export const useTrainingPlanWeeksPage = ({
 }) => {
   const navigate = useNavigate();
 
-  const { data: trainingPlanWeeks, isLoading } = useTrainingPlanWeek({
+  const { data: trainingPlanWeeks, isFetching } = useTrainingPlanWeek({
     trainingPlanId,
   });
 
@@ -115,7 +115,7 @@ export const useTrainingPlanWeeksPage = ({
 
   return {
     handleNavigate,
-    isLoading,
+    isFetching,
     trainingPlanWeeks: trainingPlanWeeks ?? [],
   };
 };
