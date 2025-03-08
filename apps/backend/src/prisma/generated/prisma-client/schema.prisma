@@ -10,6 +10,7 @@ datasource db {
 }
 
 model TrainingPlan {
+
   trainingPlanId String   @id @default(uuid())
   name           String   @unique @db.VarChar(50)
   description    String?  @db.VarChar(255)
@@ -18,9 +19,12 @@ model TrainingPlan {
 
   // Relations
   trainingPlanWeeks TrainingPlanWeek[]
+
+  @@map("training_plans")
 }
 
 model TrainingPlanWeek {
+
   trainingPlanWeekId String   @id @default(uuid())
   trainingPlanId     String
   weekNumber         Int
@@ -30,12 +34,15 @@ model TrainingPlanWeek {
   // Relations
   trainingPlan TrainingPlan @relation(fields: [trainingPlanId], references: [trainingPlanId], onDelete: Cascade)
   workouts     Workout[]
+
+  @@map("training_plan_weeks")
 }
 
 model Workout {
+
   workoutId          String   @id @default(uuid())
   trainingPlanWeekId String
-  name               String   @unique @db.VarChar(50)
+  name               String   @db.VarChar(50)
   order              Int
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -43,9 +50,12 @@ model Workout {
   // Relations
   trainingPlanWeek TrainingPlanWeek  @relation(fields: [trainingPlanWeekId], references: [trainingPlanWeekId], onDelete: Cascade)
   workoutExercises WorkoutExercise[]
+
+  @@map("workouts")
 }
 
 model WorkoutExercise {
+
   workoutExerciseId String   @id @default(uuid())
   workoutId         String
   exerciseId        String
@@ -61,9 +71,11 @@ model WorkoutExercise {
   // Indexes
   @@index([workoutId])
   @@index([exerciseId])
+  @@map("workout_exercises")
 }
 
 model Exercise {
+
   exerciseId String   @id @default(uuid())
   name       String   @unique @db.VarChar(50)
   createdAt  DateTime @default(now())
@@ -71,9 +83,12 @@ model Exercise {
 
   // Relations
   workoutExercises WorkoutExercise[]
+
+  @@map("exercises")
 }
 
 model Set {
+
   setId             String   @id @default(uuid())
   workoutExerciseId String
   reps              Int
@@ -84,4 +99,6 @@ model Set {
 
   // Relations
   workoutExercise WorkoutExercise @relation(fields: [workoutExerciseId], references: [workoutExerciseId], onDelete: Cascade)
+
+  @@map("sets")
 }

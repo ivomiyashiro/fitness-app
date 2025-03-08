@@ -8441,17 +8441,17 @@ export namespace Prisma {
 
   export type WorkoutWhereUniqueInput = Prisma.AtLeast<{
     workoutId?: string
-    name?: string
     AND?: WorkoutWhereInput | WorkoutWhereInput[]
     OR?: WorkoutWhereInput[]
     NOT?: WorkoutWhereInput | WorkoutWhereInput[]
     trainingPlanWeekId?: StringFilter<"Workout"> | string
+    name?: StringFilter<"Workout"> | string
     order?: IntFilter<"Workout"> | number
     createdAt?: DateTimeFilter<"Workout"> | Date | string
     updatedAt?: DateTimeFilter<"Workout"> | Date | string
     trainingPlanWeek?: XOR<TrainingPlanWeekScalarRelationFilter, TrainingPlanWeekWhereInput>
     workoutExercises?: WorkoutExerciseListRelationFilter
-  }, "workoutId" | "name">
+  }, "workoutId">
 
   export type WorkoutOrderByWithAggregationInput = {
     workoutId?: SortOrder

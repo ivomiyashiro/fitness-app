@@ -10,6 +10,8 @@ datasource db {
 }
 
 model TrainingPlan {
+  @@map("training_plans")
+
   trainingPlanId String   @id @default(uuid())
   name           String   @unique @db.VarChar(50)
   description    String?  @db.VarChar(255)
@@ -21,6 +23,8 @@ model TrainingPlan {
 }
 
 model TrainingPlanWeek {
+  @@map("training_plan_weeks")
+
   trainingPlanWeekId String   @id @default(uuid())
   trainingPlanId     String
   weekNumber         Int
@@ -33,9 +37,11 @@ model TrainingPlanWeek {
 }
 
 model Workout {
+  @@map("workouts")
+
   workoutId String @id @default(uuid())
   trainingPlanWeekId String
-  name String @unique @db.VarChar(50)
+  name String @db.VarChar(50)
   order Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -46,6 +52,8 @@ model Workout {
 }
 
 model WorkoutExercise {
+  @@map("workout_exercises")
+
   workoutExerciseId String @id @default(uuid())
   workoutId String
   exerciseId String
@@ -64,6 +72,8 @@ model WorkoutExercise {
 }
 
 model Exercise {
+  @@map("exercises")
+
   exerciseId String @id @default(uuid())
   name String @unique @db.VarChar(50)
   createdAt DateTime @default(now())
@@ -74,6 +84,8 @@ model Exercise {
 }
 
 model Set {
+  @@map("sets")
+  
   setId String @id @default(uuid())
   workoutExerciseId String
   reps Int
