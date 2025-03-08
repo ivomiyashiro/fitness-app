@@ -1,12 +1,15 @@
 import { useState } from "react";
 import {
   ChevronRightIcon,
+  CopyIcon,
   PencilIcon,
   PlusIcon,
   TrashIcon,
 } from "lucide-react";
 import { useSwipeable } from "react-swipeable";
+
 import { cn } from "@/lib/utils";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "./button";
 
@@ -59,6 +62,7 @@ const useListItem = ({
 type ItemProps<T> = {
   allowDeleting?: boolean;
   allowEditing?: boolean;
+  allowCopy?: boolean;
   data: T;
   displayExpr?: string;
   label?: string;
@@ -67,11 +71,13 @@ type ItemProps<T> = {
   onItemClick?: (data: T) => void;
   onEditClick?: (data: T) => void;
   onDeleteClick?: (data: T) => void;
+  onCopyClick?: (data: T) => void;
 };
 
 export const ListItem = <T extends Record<string, unknown>>({
   allowDeleting = false,
   allowEditing = false,
+  allowCopy = false,
   data,
   displayExpr,
   itemIcon: Icon,
@@ -79,6 +85,7 @@ export const ListItem = <T extends Record<string, unknown>>({
   onItemClick,
   onEditClick,
   onDeleteClick,
+  onCopyClick,
 }: ItemProps<T>) => {
   const { displayValue, handlers, handlerSwiped, isSwiped } = useListItem({
     data,
@@ -95,11 +102,23 @@ export const ListItem = <T extends Record<string, unknown>>({
     >
       <div
         className={cn("grid items-center transition-all last:border-none", {
-          "-translate-x-12": !isSwiped && (allowDeleting || allowEditing),
-          "-translate-x-24": !isSwiped && allowDeleting && allowEditing,
-          "grid-cols-[3rem_55rem]": allowDeleting || allowEditing,
-          "grid-cols-[3rem_3rem_55rem]": allowDeleting && allowEditing,
+          "translate-x-0": isSwiped,
         })}
+        style={{
+          transform: !isSwiped
+            ? `translateX(-${
+                (Number(allowDeleting) +
+                  Number(allowEditing) +
+                  Number(allowCopy)) *
+                48
+              }px)`
+            : undefined,
+          gridTemplateColumns: `${Array(
+            Number(allowDeleting) + Number(allowEditing) + Number(allowCopy),
+          )
+            .fill("3rem")
+            .join(" ")} 55rem`,
+        }}
       >
         {allowDeleting && (
           <button
@@ -121,6 +140,17 @@ export const ListItem = <T extends Record<string, unknown>>({
             }}
           >
             <PencilIcon className="size-4" />
+          </button>
+        )}
+        {allowCopy && (
+          <button
+            className="text-destructive-foreground flex w-12 justify-center bg-green-500 py-4"
+            onClick={() => {
+              handlerSwiped(false);
+              onCopyClick?.(data);
+            }}
+          >
+            <CopyIcon className="size-4" />
           </button>
         )}
         <div

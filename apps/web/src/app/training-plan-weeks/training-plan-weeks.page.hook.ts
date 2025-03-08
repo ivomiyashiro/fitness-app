@@ -5,9 +5,54 @@ import { TrainingPlanWeek } from "@/models";
 
 import {
   useTrainingPlanWeek,
+  useTrainingPlanWeekCopy,
   useTrainingPlanWeekDelete,
   useTrainingPlanWeekPost,
 } from "@/hooks/use-training-plan-week";
+
+export const useTrainingPlanWeekCopyDrawer = ({
+  trainingPlanId,
+}: {
+  trainingPlanId: string;
+}) => {
+  const [isCopyDrawerOpen, setCopyDrawerOpen] = useState(false);
+  const [selectedTrainingPlanWeekToCopy, setSelectedTrainingPlanWeekToCopy] =
+    useState<TrainingPlanWeek | undefined>(undefined);
+
+  const handleSuccess = () => {
+    setCopyDrawerOpen(false);
+    setSelectedTrainingPlanWeekToCopy(undefined);
+  };
+
+  const { mutate: copyTrainingPlanWeek, isPending } = useTrainingPlanWeekCopy({
+    onSuccess: handleSuccess,
+    trainingPlanId,
+  });
+
+  const handleCopyDrawerOpen = (trainingPlanWeek: TrainingPlanWeek) => {
+    setCopyDrawerOpen(true);
+    setSelectedTrainingPlanWeekToCopy(trainingPlanWeek);
+  };
+
+  const handleCopyDrawerClose = () => {
+    setCopyDrawerOpen(false);
+  };
+
+  const handleConfirmCopy = () => {
+    copyTrainingPlanWeek(
+      selectedTrainingPlanWeekToCopy?.trainingPlanWeekId ?? "",
+    );
+  };
+
+  return {
+    handleCopyDrawerClose,
+    handleCopyDrawerOpen,
+    handleConfirmCopy,
+    isCopyDrawerOpen,
+    isCopyDrawerPending: isPending,
+    selectedTrainingPlanWeekToCopy,
+  };
+};
 
 export const useTrainingPlanWeekDeleteDrawer = ({
   trainingPlanId,
@@ -15,13 +60,14 @@ export const useTrainingPlanWeekDeleteDrawer = ({
   trainingPlanId: string;
 }) => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [selectedTrainingPlanWeek, setSelectedTrainingPlanWeek] = useState<
-    TrainingPlanWeek | undefined
-  >(undefined);
+  const [
+    selectedTrainingPlanWeekToDelete,
+    setSelectedTrainingPlanWeekToDelete,
+  ] = useState<TrainingPlanWeek | undefined>(undefined);
 
   const handleSuccess = () => {
     setDrawerOpen(false);
-    setSelectedTrainingPlanWeek(undefined);
+    setSelectedTrainingPlanWeekToDelete(undefined);
   };
 
   const { mutate: deleteTrainingPlanWeek, isPending } =
@@ -32,7 +78,7 @@ export const useTrainingPlanWeekDeleteDrawer = ({
 
   const handleDrawerOpen = (trainingPlanWeek: TrainingPlanWeek) => {
     setDrawerOpen(true);
-    setSelectedTrainingPlanWeek(trainingPlanWeek);
+    setSelectedTrainingPlanWeekToDelete(trainingPlanWeek);
   };
 
   const handleCloseDelete = () => {
@@ -40,7 +86,9 @@ export const useTrainingPlanWeekDeleteDrawer = ({
   };
 
   const handleConfirmDelete = () => {
-    deleteTrainingPlanWeek(selectedTrainingPlanWeek?.trainingPlanWeekId ?? "");
+    deleteTrainingPlanWeek(
+      selectedTrainingPlanWeekToDelete?.trainingPlanWeekId ?? "",
+    );
   };
 
   return {
@@ -49,7 +97,7 @@ export const useTrainingPlanWeekDeleteDrawer = ({
     handleDrawerOpenDelete: handleDrawerOpen,
     isDeleteDrawerOpen: isDrawerOpen,
     isDeleteDrawerPending: isPending,
-    selectedTrainingPlanWeek,
+    selectedTrainingPlanWeekToDelete,
   };
 };
 

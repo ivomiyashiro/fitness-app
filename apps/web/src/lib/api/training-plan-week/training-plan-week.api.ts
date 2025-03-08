@@ -41,6 +41,17 @@ class Service {
 
     return result;
   }
+
+  public copy(
+    trainingPlanWeekId: TrainingPlanWeek["trainingPlanWeekId"],
+  ): Promise<TrainingPlanWeek[]> {
+    const result = this.baseService.put<TrainingPlanWeekResponse>(
+      `${this.endpoint}/${trainingPlanWeekId}/copy`,
+      {},
+    );
+
+    return result;
+  }
 }
 
 export const TrainingPlanWeekService = new Service();

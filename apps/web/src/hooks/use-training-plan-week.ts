@@ -59,3 +59,24 @@ export const useTrainingPlanWeekDelete = ({
     onSuccess,
   });
 };
+
+export const useTrainingPlanWeekCopy = ({
+  trainingPlanId,
+  onSuccess,
+}: {
+  trainingPlanId: string;
+  onSuccess: () => void;
+}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: getTrainingPlansQueryKey({ trainingPlanId }),
+    mutationFn: (trainingPlanWeekId: TrainingPlanWeek["trainingPlanWeekId"]) =>
+      TrainingPlanWeekService.copy(trainingPlanWeekId),
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: getTrainingPlansQueryKey({ trainingPlanId }),
+      }),
+    onSuccess,
+  });
+};

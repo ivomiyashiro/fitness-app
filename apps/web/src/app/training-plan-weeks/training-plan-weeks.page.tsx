@@ -7,6 +7,7 @@ import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { AppFallback } from "@/components/ui/app-fallback";
 
 import {
+  useTrainingPlanWeekCopyDrawer,
   useTrainingPlanWeekCreateDrawer,
   useTrainingPlanWeekDeleteDrawer,
   useTrainingPlanWeeksPage,
@@ -25,12 +26,23 @@ const TrainingPlanWeeksPage = () => {
     });
 
   const {
+    handleCopyDrawerClose,
+    handleCopyDrawerOpen,
+    handleConfirmCopy,
+    isCopyDrawerOpen,
+    isCopyDrawerPending,
+    selectedTrainingPlanWeekToCopy,
+  } = useTrainingPlanWeekCopyDrawer({
+    trainingPlanId,
+  });
+
+  const {
     handleCloseDelete,
     handleConfirmDelete,
     handleDrawerOpenDelete,
     isDeleteDrawerOpen,
     isDeleteDrawerPending,
-    selectedTrainingPlanWeek,
+    selectedTrainingPlanWeekToDelete,
   } = useTrainingPlanWeekDeleteDrawer({
     trainingPlanId,
   });
@@ -61,10 +73,12 @@ const TrainingPlanWeeksPage = () => {
             key={tpw.trainingPlanWeekId ?? index}
             allowDeleting={true}
             allowEditing={false}
+            allowCopy={true}
             data={tpw}
             displayExpr="weekNumber"
             itemIcon={CalendarIcon}
             label="Week"
+            onCopyClick={handleCopyDrawerOpen}
             onDeleteClick={handleDrawerOpenDelete}
             onItemClick={handleNavigate}
           />
@@ -73,7 +87,7 @@ const TrainingPlanWeeksPage = () => {
       <DrawerDialog
         type="destructive"
         open={isDeleteDrawerOpen}
-        title={`Are you sure you want to delete week ${selectedTrainingPlanWeek?.weekNumber}?`}
+        title={`Are you sure you want to delete week ${selectedTrainingPlanWeekToDelete?.weekNumber}?`}
         disabled={isDeleteDrawerPending}
         onClose={handleCloseDelete}
         onConfirm={handleConfirmDelete}
@@ -88,6 +102,16 @@ const TrainingPlanWeeksPage = () => {
         onClose={handleCloseCreate}
         onConfirm={handleConfirmCreate}
         onCancel={handleCloseCreate}
+      />
+      <DrawerDialog
+        type="default"
+        open={isCopyDrawerOpen}
+        title={`Are you sure you want to copy week ${selectedTrainingPlanWeekToCopy?.weekNumber} to the rest of training plan?`}
+        primaryButtonText="Confirm"
+        disabled={isCopyDrawerPending}
+        onClose={handleCopyDrawerClose}
+        onConfirm={handleConfirmCopy}
+        onCancel={handleCopyDrawerClose}
       />
     </PageLayout>
   );
