@@ -5,6 +5,7 @@ import {
   TrainingPlanWeekCreateService,
   TrainingPlanWeekDeleteService,
   TrainingPlanWeekGetService,
+  TrainingPlanWeekCopyService,
 } from './services';
 
 @Module({
@@ -14,6 +15,7 @@ import {
     TrainingPlanWeekAdapter,
     TrainingPlanWeekCreateService,
     TrainingPlanWeekDeleteService,
+    TrainingPlanWeekCopyService,
     TrainingPlanWeekGetService,
   ],
 })

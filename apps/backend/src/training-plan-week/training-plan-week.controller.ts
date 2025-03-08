@@ -6,9 +6,11 @@ import {
   Body,
   Delete,
   Param,
+  Put,
 } from '@nestjs/common';
 import { IHttpDeletedResponse } from '@/common/contracts';
 import {
+  TrainingPlanWeekCopyService,
   TrainingPlanWeekCreateService,
   TrainingPlanWeekDeleteService,
   TrainingPlanWeekGetService,
@@ -22,6 +24,7 @@ export class TrainingPlanWeekController {
     private readonly trainingPlanWeekAdapter: TrainingPlanWeekAdapter,
     private readonly trainingPlanWeekCreateService: TrainingPlanWeekCreateService,
     private readonly trainingPlanWeekDeleteService: TrainingPlanWeekDeleteService,
+    private readonly trainingPlanWeekCopyService: TrainingPlanWeekCopyService,
     private readonly trainingPlanWeekGetService: TrainingPlanWeekGetService,
   ) {}
 
@@ -54,5 +57,14 @@ export class TrainingPlanWeekController {
       timestamp: new Date().toISOString(),
       path: '/training-plan-weeks',
     };
+  }
+
+  @Put(':id/copy')
+  async copyTrainingPlanWeek(
+    @Param('id') id: string,
+  ): Promise<TrainingPlanWeekResponse[]> {
+    const result = await this.trainingPlanWeekCopyService.handle(id);
+
+    return this.trainingPlanWeekAdapter.toReponseArray(result);
   }
 }
