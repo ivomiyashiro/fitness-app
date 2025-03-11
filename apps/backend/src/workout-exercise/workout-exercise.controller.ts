@@ -9,14 +9,19 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { WorkoutExerciseAdapter } from './adapters';
+import {
+  WorkoutExerciseCreate,
+  WorkoutExerciseUpdate,
+} from '@/workout-exercise/contracts';
+
+import { WorkoutExerciseAdapter } from '@/workout-exercise/workout-exercise.adapter';
+
 import {
   WorkoutExerciseCreateService,
   WorkoutExerciseDeleteService,
   WorkoutExerciseUpdateService,
   WorkoutExerciseFindManyService,
-} from './services';
-import { WorkoutExerciseCreate, WorkoutExerciseUpdate } from './contracts';
+} from '@/workout-exercise/services';
 
 @Controller('workout-exercises')
 export class WorkoutExerciseController {

@@ -8,15 +8,20 @@ import {
   Param,
   Put,
 } from '@nestjs/common';
+
 import { IHttpDeletedResponse } from '@/common/contracts';
+import {
+  TrainingPlanWeekResponse,
+  TrainingPlanWeekCreate,
+} from '@/training-plan-week/contracts';
+
+import { TrainingPlanWeekAdapter } from '@/training-plan-week/training-plan-week.adapter';
 import {
   TrainingPlanWeekCopyService,
   TrainingPlanWeekCreateService,
   TrainingPlanWeekDeleteService,
   TrainingPlanWeekGetService,
-} from './services';
-import { TrainingPlanWeekAdapter } from './adapters';
-import { TrainingPlanWeekResponse, TrainingPlanWeekCreate } from './contracts';
+} from '@/training-plan-week/services';
 
 @Controller('training-plan-weeks')
 export class TrainingPlanWeekController {

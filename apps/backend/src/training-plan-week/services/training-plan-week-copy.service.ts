@@ -1,12 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { TrainingPlanWeekWithRelations } from '@/training-plan-week/contracts';
 import { PrismaService } from '@/prisma/prisma.service';
-import { TrainingPlanWeek } from '@/prisma/generated/prisma-client';
 
 @Injectable()
 export class TrainingPlanWeekCopyService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async handle(trainingPlanWeekId: string): Promise<TrainingPlanWeek[]> {
+  async handle(
+    trainingPlanWeekId: string,
+  ): Promise<TrainingPlanWeekWithRelations[]> {
     // 1. Once I have the training plan week, I can get the data to copy
     const trainingPlanWeekToCopy =
       await this.prismaService.trainingPlanWeek.findUnique({
@@ -176,6 +178,19 @@ export class TrainingPlanWeekCopyService {
     return this.prismaService.trainingPlanWeek.findMany({
       where: {
         trainingPlanId: trainingPlanWeekToCopy.trainingPlanId,
+      },
+      include: {
+        workouts: {
+          include: {
+            workoutExercises: {
+              include: {
+                exercise: true,
+                sets: true,
+                workout: true,
+              },
+            },
+          },
+        },
       },
     });
   }

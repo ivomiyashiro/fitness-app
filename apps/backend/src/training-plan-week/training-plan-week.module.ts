@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TrainingPlanWeekController } from './training-plan-week.controller';
-import { TrainingPlanWeekAdapter } from './adapters';
+import { TrainingPlanWeekAdapter } from '@/training-plan-week/training-plan-week.adapter';
+import { TrainingPlanWeekController } from '@/training-plan-week/training-plan-week.controller';
 import {
   TrainingPlanWeekCreateService,
   TrainingPlanWeekDeleteService,
   TrainingPlanWeekGetService,
   TrainingPlanWeekCopyService,
-} from './services';
+} from '@/training-plan-week/services';
 
 @Module({
   imports: [],

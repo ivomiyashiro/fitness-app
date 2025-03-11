@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { TrainingPlanController } from './training-plan.controller';
-import { TrainingPlanAdapter } from './adapters';
+import { TrainingPlanAdapter } from '@/training-plan/training-plan.adapter';
+import { TrainingPlanController } from '@/training-plan/training-plan.controller';
 import {
   TrainingPlanCreateService,
   TrainingPlanDeleteService,
   TrainingPlanFindManyService,
   TrainingPlanFindService,
   TrainingPlanUpdateService,
-} from './services';
+} from '@/training-plan/services';
 
 @Module({
   imports: [],

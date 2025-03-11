@@ -1,7 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
 
-import { TrainingPlanWithWeeks, TrainingPlanUpdate } from '../contracts';
+import {
+  TrainingPlanWithRelations,
+  TrainingPlanUpdate,
+} from '@/training-plan/contracts';
 
 @Injectable()
 export class TrainingPlanUpdateService {
@@ -10,7 +13,7 @@ export class TrainingPlanUpdateService {
   async handle(
     id: string,
     contract: TrainingPlanUpdate,
-  ): Promise<TrainingPlanWithWeeks> {
+  ): Promise<TrainingPlanWithRelations> {
     const trainingPlan = await this.prisma.trainingPlan.findUnique({
       where: { trainingPlanId: id },
     });
@@ -42,7 +45,15 @@ export class TrainingPlanUpdateService {
       where: { trainingPlanId: id },
       data: updatedTrainingPlan,
       include: {
-        trainingPlanWeeks: true,
+        trainingPlanWeeks: {
+          include: {
+            workouts: {
+              include: {
+                workoutExercises: true,
+              },
+            },
+          },
+        },
       },
     });
   }

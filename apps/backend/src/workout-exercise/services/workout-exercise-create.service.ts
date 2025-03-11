@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma.service';
-import { WorkoutExerciseService, WorkoutExerciseCreate } from '../contracts';
+import {
+  WorkoutExerciseService,
+  WorkoutExerciseCreate,
+} from '@/workout-exercise/contracts';
 
 @Injectable()
 export class WorkoutExerciseCreateService {

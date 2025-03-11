@@ -1,6 +1,9 @@
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { WorkoutExerciseService, WorkoutExerciseUpdate } from '../contracts';
+import {
+  WorkoutExerciseService,
+  WorkoutExerciseUpdate,
+} from '@/workout-exercise/contracts';
 
 @Injectable()
 export class WorkoutExerciseUpdateService {

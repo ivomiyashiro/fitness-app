@@ -12,25 +12,11 @@ export class WorkoutFindManyService {
         trainingPlanWeekId,
       },
       include: {
-        trainingPlanWeek: {
-          select: {
-            trainingPlanWeekId: true,
-          },
-        },
         workoutExercises: {
           include: {
-            exercise: {
-              select: {
-                exerciseId: true,
-                name: true,
-              },
-            },
-            workout: {
-              select: {
-                workoutId: true,
-                name: true,
-              },
-            },
+            exercise: true,
+            sets: true,
+            workout: true,
           },
         },
       },

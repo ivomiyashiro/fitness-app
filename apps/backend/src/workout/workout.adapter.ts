@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WorkoutResponse, WorkoutServiceResponse } from '../contracts';
+import { WorkoutResponse, WorkoutServiceResponse } from '@/workout/contracts';
 
 @Injectable()
 export class WorkoutAdapter {
@@ -11,7 +11,7 @@ export class WorkoutAdapter {
       name: workout.name,
       order: workout.order,
       trainingPlanWeekId: workout.trainingPlanWeekId,
-      exercises: workout.workoutExercises.map((workoutExercise) => ({
+      workoutExercises: workout.workoutExercises.map((workoutExercise) => ({
         workoutExerciseId: workoutExercise.workoutExerciseId,
         order: workoutExercise.order,
         exercise: {
@@ -22,6 +22,11 @@ export class WorkoutAdapter {
           workoutId: workoutExercise.workout.workoutId,
           name: workoutExercise.workout.name,
         },
+        sets: workoutExercise.sets.map((set) => ({
+          setId: set.setId,
+          reps: set.reps,
+          rir: set.rir,
+        })),
       })),
     };
   }

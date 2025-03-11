@@ -49,25 +49,11 @@ export class WorkoutUpdateService {
           order: contract.order,
         },
         include: {
-          trainingPlanWeek: {
-            select: {
-              trainingPlanWeekId: true,
-            },
-          },
           workoutExercises: {
             include: {
-              workout: {
-                select: {
-                  workoutId: true,
-                  name: true,
-                },
-              },
-              exercise: {
-                select: {
-                  exerciseId: true,
-                  name: true,
-                },
-              },
+              exercise: true,
+              sets: true,
+              workout: true,
             },
           },
         },

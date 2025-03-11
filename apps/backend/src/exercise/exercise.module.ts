@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ExerciseController } from './exercise.controller';
-import { ExerciseAdapter } from './adapters';
-import { ExerciseCreateBulkService, ExerciseFindManyService } from './services';
+import { ExerciseAdapter } from '@/exercise/exercise.adapter';
+import { ExerciseController } from '@/exercise/exercise.controller';
+import {
+  ExerciseCreateBulkService,
+  ExerciseFindManyService,
+} from '@/exercise/services';
 
 @Module({
   controllers: [ExerciseController],

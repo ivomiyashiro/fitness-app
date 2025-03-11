@@ -1,5 +1,3 @@
-import { CONFIG } from '@/common/config';
-import { IHttpDeletedResponse } from '@/common/contracts';
 import {
   Body,
   Controller,
@@ -9,19 +7,23 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+
+import { CONFIG } from '@/common/config';
+import { IHttpDeletedResponse } from '@/common/contracts';
+
+import { TrainingPlanAdapter } from '@/training-plan/training-plan.adapter';
+import {
+  TrainingPlanCreate,
+  TrainingPlanUpdate,
+  TrainingPlanResponse,
+} from '@/training-plan/contracts';
 import {
   TrainingPlanCreateService,
   TrainingPlanDeleteService,
   TrainingPlanFindManyService,
   TrainingPlanFindService,
   TrainingPlanUpdateService,
-} from './services';
-import { TrainingPlanAdapter } from './adapters';
-import {
-  TrainingPlanCreate,
-  TrainingPlanUpdate,
-  TrainingPlanResponse,
-} from './contracts';
+} from '@/training-plan/services';
 
 @Controller('training-plans')
 export class TrainingPlanController {
@@ -37,7 +39,7 @@ export class TrainingPlanController {
   @Get()
   async getTrainingPlan(): Promise<TrainingPlanResponse[]> {
     const trainingPlans = await this.trainingPlanFindManyService.handle();
-
+    console.log(trainingPlans);
     return this.trainingPlanAdapter.toResponseArray(trainingPlans);
   }
 

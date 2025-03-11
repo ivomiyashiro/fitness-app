@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { WorkoutExerciseResponse, WorkoutExerciseService } from '../contracts';
+import {
+  WorkoutExerciseResponse,
+  WorkoutExerciseService,
+} from '@/workout-exercise/contracts';
 
 @Injectable()
 export class WorkoutExerciseAdapter {

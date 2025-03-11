@@ -4,23 +4,9 @@ export type WorkoutServiceResponse = Prisma.WorkoutGetPayload<{
   include: {
     workoutExercises: {
       include: {
-        exercise: {
-          select: {
-            exerciseId: true;
-            name: true;
-          };
-        };
-        workout: {
-          select: {
-            workoutId: true;
-            name: true;
-          };
-        };
-      };
-    };
-    trainingPlanWeek: {
-      select: {
-        trainingPlanWeekId: true;
+        exercise: true;
+        sets: true;
+        workout: true;
       };
     };
   };

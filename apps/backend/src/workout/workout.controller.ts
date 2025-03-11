@@ -8,15 +8,22 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+
 import { IHttpDeletedResponse } from '@/common/contracts';
-import { WorkoutCreate, WorkoutResponse, WorkoutUpdate } from './contracts';
-import { WorkoutAdapter } from './adapters';
+import {
+  WorkoutCreate,
+  WorkoutResponse,
+  WorkoutUpdate,
+} from '@/workout/contracts';
+
+import { WorkoutAdapter } from '@/workout/workout.adapter';
+
 import {
   WorkoutCreateService,
   WorkoutDeleteService,
   WorkoutFindManyService,
   WorkoutUpdateService,
-} from './services';
+} from '@/workout/services';
 
 @Controller('workouts')
 export class WorkoutController {

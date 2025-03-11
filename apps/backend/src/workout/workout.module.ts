@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { WorkoutController } from './workout.controller';
-import { WorkoutAdapter } from './adapters';
+import { WorkoutController } from '@/workout/workout.controller';
+import { WorkoutAdapter } from '@/workout/workout.adapter';
 import {
   WorkoutCreateService,
   WorkoutDeleteService,
   WorkoutFindManyService,
   WorkoutUpdateService,
-} from './services';
+} from '@/workout/services';
 
 @Module({
   imports: [],

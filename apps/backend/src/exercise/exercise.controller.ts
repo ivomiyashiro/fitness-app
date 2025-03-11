@@ -1,7 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ExerciseFindManyService, ExerciseCreateBulkService } from './services';
-import { ExerciseResponse, ExerciseCreate } from './contracts';
-import { ExerciseAdapter } from './adapters';
+import {
+  ExerciseCreateBulkService,
+  ExerciseFindManyService,
+} from '@/exercise/services';
+import { ExerciseResponse, ExerciseCreate } from '@/exercise/contracts';
+import { ExerciseAdapter } from '@/exercise/exercise.adapter';
 
 @Controller('exercises')
 export class ExerciseController {

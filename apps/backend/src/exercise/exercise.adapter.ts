@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Exercise } from '@/prisma/generated/prisma-client';
-import { ExerciseResponse } from '../contracts';
+import { ExerciseResponse } from '@/exercise/contracts';
 
 @Injectable()
 export class ExerciseAdapter {
