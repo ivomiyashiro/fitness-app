@@ -39,7 +39,7 @@ export class TrainingPlanController {
   @Get()
   async getTrainingPlan(): Promise<TrainingPlanResponse[]> {
     const trainingPlans = await this.trainingPlanFindManyService.handle();
-    console.log(trainingPlans);
+
     return this.trainingPlanAdapter.toResponseArray(trainingPlans);
   }
 
