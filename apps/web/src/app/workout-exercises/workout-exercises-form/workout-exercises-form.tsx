@@ -40,7 +40,7 @@ export const WorkoutExercisesForm = ({
       onClose,
       queryKey,
     });
-  console.log(form.formState.errors);
+
   return (
     <DrawerForm
       form={form}
