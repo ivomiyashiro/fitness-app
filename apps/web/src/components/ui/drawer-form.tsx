@@ -25,7 +25,7 @@ export const DrawerForm = <TFormValues extends FieldValues>({
       <DrawerContent className="h-5/6">
         <DrawerDescription />
         <Form {...form}>
-          <form {...props} className={cn("", className)}>
+          <form {...props} className={cn("overflow-auto", className)}>
             {children}
           </form>
         </Form>

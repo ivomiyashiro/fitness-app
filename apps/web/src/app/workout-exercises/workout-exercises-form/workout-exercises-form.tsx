@@ -43,10 +43,11 @@ export const WorkoutExercisesForm = ({
 
   return (
     <DrawerForm
+      className="relative"
       form={form}
-      open={open}
       onClose={handleResetFormAndClose}
       onSubmit={form.handleSubmit(onSubmit)}
+      open={open}
     >
       <DrawerHeader>
         <DrawerTitle>{title}</DrawerTitle>
@@ -121,7 +122,11 @@ export const WorkoutExercisesForm = ({
             </FormItem>
           )}
         />
-        <Button disabled={isLoading}>{isLoading ? "Saving..." : "Save"}</Button>
+      </div>
+      <div className="bg-background sticky bottom-0 w-full p-4">
+        <Button disabled={isLoading} className="w-full">
+          {isLoading ? "Saving..." : "Save"}
+        </Button>
       </div>
     </DrawerForm>
   );
