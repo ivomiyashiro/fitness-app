@@ -1,4 +1,4 @@
-GET {{BASE_URL}}/exercises
+GET {{BASE_URL}}/exercises/search?search=tricep&limit=10&sortBy=name&sortOrder=asc&offset=0
 
 ###
 
@@ -14,6 +14,294 @@ Content-Type: application/json
   },
   {
     "name": "Deadlift"
+  },
+  {
+    "name": "Pull-up"
+  },
+  {
+    "name": "Push-up"
+  },
+  {
+    "name": "Dumbbell Curl"
+  },
+  {
+    "name": "Tricep Extension"
+  },
+  {
+    "name": "Shoulder Press"
+  },
+  {
+    "name": "Lat Pulldown"
+  },
+  {
+    "name": "Leg Press"
+  },
+  {
+    "name": "Leg Extension"
+  },
+  {
+    "name": "Leg Curl"
+  },
+  {
+    "name": "Calf Raise"
+  },
+  {
+    "name": "Romanian Deadlift"
+  },
+  {
+    "name": "Barbell Row"
+  },
+  {
+    "name": "Dumbbell Row"
+  },
+  {
+    "name": "Incline Bench Press"
+  },
+  {
+    "name": "Decline Bench Press"
+  },
+  {
+    "name": "Chest Fly"
+  },
+  {
+    "name": "Lateral Raise"
+  },
+  {
+    "name": "Front Raise"
+  },
+  {
+    "name": "Reverse Fly"
+  },
+  {
+    "name": "Face Pull"
+  },
+  {
+    "name": "Shrug"
+  },
+  {
+    "name": "Upright Row"
+  },
+  {
+    "name": "Preacher Curl"
+  },
+  {
+    "name": "Hammer Curl"
+  },
+  {
+    "name": "Concentration Curl"
+  },
+  {
+    "name": "Skull Crusher"
+  },
+  {
+    "name": "Tricep Pushdown"
+  },
+  {
+    "name": "Dip"
+  },
+  {
+    "name": "Chin-up"
+  },
+  {
+    "name": "Hanging Leg Raise"
+  },
+  {
+    "name": "Plank"
+  },
+  {
+    "name": "Side Plank"
+  },
+  {
+    "name": "Russian Twist"
+  },
+  {
+    "name": "Crunch"
+  },
+  {
+    "name": "Sit-up"
+  },
+  {
+    "name": "Bicycle Crunch"
+  },
+  {
+    "name": "Mountain Climber"
+  },
+  {
+    "name": "Burpee"
+  },
+  {
+    "name": "Jumping Jack"
+  },
+  {
+    "name": "Box Jump"
+  },
+  {
+    "name": "Lunge"
+  },
+  {
+    "name": "Walking Lunge"
+  },
+  {
+    "name": "Reverse Lunge"
+  },
+  {
+    "name": "Side Lunge"
+  },
+  {
+    "name": "Bulgarian Split Squat"
+  },
+  {
+    "name": "Goblet Squat"
+  },
+  {
+    "name": "Front Squat"
+  },
+  {
+    "name": "Hack Squat"
+  },
+  {
+    "name": "Sumo Deadlift"
+  },
+  {
+    "name": "Deficit Deadlift"
+  },
+  {
+    "name": "Rack Pull"
+  },
+  {
+    "name": "Good Morning"
+  },
+  {
+    "name": "Hip Thrust"
+  },
+  {
+    "name": "Glute Bridge"
+  },
+  {
+    "name": "Cable Crunch"
+  },
+  {
+    "name": "Ab Rollout"
+  },
+  {
+    "name": "Decline Sit-up"
+  },
+  {
+    "name": "Hanging Knee Raise"
+  },
+  {
+    "name": "Reverse Crunch"
+  },
+  {
+    "name": "Seated Row"
+  },
+  {
+    "name": "T-Bar Row"
+  },
+  {
+    "name": "Cable Row"
+  },
+  {
+    "name": "Pendlay Row"
+  },
+  {
+    "name": "Arnold Press"
+  },
+  {
+    "name": "Military Press"
+  },
+  {
+    "name": "Push Press"
+  },
+  {
+    "name": "Clean and Press"
+  },
+  {
+    "name": "Clean and Jerk"
+  },
+  {
+    "name": "Snatch"
+  },
+  {
+    "name": "Power Clean"
+  },
+  {
+    "name": "Hang Clean"
+  },
+  {
+    "name": "Kettlebell Swing"
+  },
+  {
+    "name": "Turkish Get-up"
+  },
+  {
+    "name": "Kettlebell Clean"
+  },
+  {
+    "name": "Kettlebell Snatch"
+  },
+  {
+    "name": "Battle Ropes"
+  },
+  {
+    "name": "Sled Push"
+  },
+  {
+    "name": "Sled Pull"
+  },
+  {
+    "name": "Farmer's Walk"
+  },
+  {
+    "name": "Tire Flip"
+  },
+  {
+    "name": "Medicine Ball Slam"
+  },
+  {
+    "name": "Medicine Ball Throw"
+  },
+  {
+    "name": "Box Step-up"
+  },
+  {
+    "name": "Pistol Squat"
+  },
+  {
+    "name": "Handstand Push-up"
+  },
+  {
+    "name": "Muscle-up"
+  },
+  {
+    "name": "L-sit"
+  },
+  {
+    "name": "Back Extension"
+  },
+  {
+    "name": "Reverse Hyperextension"
+  },
+  {
+    "name": "Cable Fly"
+  },
+  {
+    "name": "Pec Deck"
+  },
+  {
+    "name": "Wrist Curl"
+  },
+  {
+    "name": "Reverse Wrist Curl"
+  },
+  {
+    "name": "Forearm Roller"
+  },
+  {
+    "name": "Neck Curl"
+  },
+  {
+    "name": "Neck Extension"
   }
 ]
 
