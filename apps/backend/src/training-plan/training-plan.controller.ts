@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 
 import { CONFIG } from '@/common/config';
@@ -16,6 +17,7 @@ import {
   TrainingPlanCreate,
   TrainingPlanUpdate,
   TrainingPlanResponse,
+  TrainingPlanSearchParams,
 } from '@/training-plan/contracts';
 import {
   TrainingPlanCreateService,
@@ -37,8 +39,11 @@ export class TrainingPlanController {
   ) {}
 
   @Get()
-  async getTrainingPlan(): Promise<TrainingPlanResponse[]> {
-    const trainingPlans = await this.trainingPlanFindManyService.handle();
+  async getTrainingPlan(
+    @Query() searchParams: TrainingPlanSearchParams,
+  ): Promise<TrainingPlanResponse[]> {
+    const trainingPlans =
+      await this.trainingPlanFindManyService.handle(searchParams);
 
     return this.trainingPlanAdapter.toResponseArray(trainingPlans);
   }

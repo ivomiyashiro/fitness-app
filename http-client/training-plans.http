@@ -1,4 +1,4 @@
-GET {{BASE_URL}}/training-plans
+GET {{BASE_URL}}/training-plans?search=training&limit=10&offset=0&sortBy=name&sortOrder=asc
 
 ###
 
