@@ -3,7 +3,7 @@ import { ExerciseAdapter } from '@/exercise/exercise.adapter';
 import { ExerciseController } from '@/exercise/exercise.controller';
 import {
   ExerciseCreateBulkService,
-  ExerciseFindManyService,
+  ExerciseSearchService,
 } from '@/exercise/services';
 
 @Module({
@@ -11,7 +11,7 @@ import {
   providers: [
     ExerciseAdapter,
     ExerciseCreateBulkService,
-    ExerciseFindManyService,
+    ExerciseSearchService,
   ],
 })
 export class ExerciseModule {}

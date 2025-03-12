@@ -1,24 +1,37 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+
+import { PaginatedResponse } from '@/common/contracts';
+import {
+  ExerciseResponse,
+  ExerciseCreate,
+  ExerciseSearchParams,
+} from '@/exercise/contracts';
+
+import { ExerciseAdapter } from '@/exercise/exercise.adapter';
+
 import {
   ExerciseCreateBulkService,
-  ExerciseFindManyService,
+  ExerciseSearchService,
 } from '@/exercise/services';
-import { ExerciseResponse, ExerciseCreate } from '@/exercise/contracts';
-import { ExerciseAdapter } from '@/exercise/exercise.adapter';
 
 @Controller('exercises')
 export class ExerciseController {
   constructor(
     private readonly exerciseAdapter: ExerciseAdapter,
     private readonly exerciseCreateBulkService: ExerciseCreateBulkService,
-    private readonly exerciseFindManyService: ExerciseFindManyService,
+    private readonly exerciseSearchService: ExerciseSearchService,
   ) {}
 
   @Get()
-  async getExercises(): Promise<ExerciseResponse[]> {
-    const result = await this.exerciseFindManyService.handle();
+  async getExercises(
+    @Query() searchParams: ExerciseSearchParams,
+  ): Promise<PaginatedResponse<ExerciseResponse>> {
+    const result = await this.exerciseSearchService.handle(searchParams);
 
-    return this.exerciseAdapter.toResponseArray(result);
+    return {
+      data: this.exerciseAdapter.toResponseArray(result.data),
+      meta: result.meta,
+    };
   }
 
   @Post('/bulk')
