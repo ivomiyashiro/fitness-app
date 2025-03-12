@@ -7,6 +7,7 @@ import {
 } from '@/training-plan/contracts';
 
 import { PrismaService } from '@/prisma/prisma.service';
+import { PaginatedResponse } from '@/common/contracts';
 
 @Injectable()
 export class TrainingPlanFindManyService {
@@ -14,7 +15,7 @@ export class TrainingPlanFindManyService {
 
   async handle(
     params?: TrainingPlanSearchParams,
-  ): Promise<TrainingPlanWithRelations[]> {
+  ): Promise<PaginatedResponse<TrainingPlanWithRelations>> {
     const { sortBy, sortOrder, offset, search, limit } = params || {};
 
     const where: Prisma.TrainingPlanWhereInput = search
@@ -26,7 +27,7 @@ export class TrainingPlanFindManyService {
         }
       : {};
 
-    return await this.prisma.trainingPlan.findMany({
+    const result = await this.prisma.trainingPlan.findMany({
       where,
       include: {
         trainingPlanWeeks: {
@@ -51,5 +52,19 @@ export class TrainingPlanFindManyService {
       skip: offset,
       take: limit,
     });
+
+    return {
+      data: result,
+      meta: {
+        currentPage: offset,
+        totalCount: result.length,
+        totalPages: Math.ceil(result.length / limit),
+        nextPage: offset + limit,
+        prevPage: offset - limit,
+        currentPageCount: result.length,
+        limit,
+        offset,
+      },
+    };
   }
 }

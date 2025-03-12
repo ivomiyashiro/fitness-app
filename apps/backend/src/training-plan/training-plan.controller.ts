@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 
 import { CONFIG } from '@/common/config';
-import { IHttpDeletedResponse } from '@/common/contracts';
+import { IHttpDeletedResponse, PaginatedResponse } from '@/common/contracts';
 
 import { TrainingPlanAdapter } from '@/training-plan/training-plan.adapter';
 import {
@@ -41,11 +41,13 @@ export class TrainingPlanController {
   @Get()
   async getTrainingPlan(
     @Query() searchParams: TrainingPlanSearchParams,
-  ): Promise<TrainingPlanResponse[]> {
-    const trainingPlans =
-      await this.trainingPlanFindManyService.handle(searchParams);
+  ): Promise<PaginatedResponse<TrainingPlanResponse>> {
+    const result = await this.trainingPlanFindManyService.handle(searchParams);
 
-    return this.trainingPlanAdapter.toResponseArray(trainingPlans);
+    return {
+      data: this.trainingPlanAdapter.toResponseArray(result.data),
+      meta: result.meta,
+    };
   }
 
   @Get(':id')
