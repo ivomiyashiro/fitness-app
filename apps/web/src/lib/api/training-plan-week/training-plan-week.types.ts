@@ -1,4 +1,4 @@
-import { TrainingPlan } from "@/models";
+import { TrainingPlan } from "@/domain";
 import { WorkoutResponse } from "../workout/workout.api.types";
 
 export type TrainingPlanWeekResponse = {

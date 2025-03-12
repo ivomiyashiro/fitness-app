@@ -3,7 +3,27 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { CONFIG } from "@/config";
 import { toastError } from "@/hooks/use-toast";
 
-import { RequestData, RequestParams } from "./index.types";
+import { RequestData, QueryParams } from "./index.types";
+
+const sanitizeParams = (params?: QueryParams) => {
+  const { limit, offset, ...rest } = params || {};
+
+  const filteredUndefinedValues = Object.entries(rest).reduce(
+    (acc, [key, value]) => {
+      if (value !== null && value !== undefined) {
+        acc[key] = value;
+      }
+      return acc;
+    },
+    {} as Record<string, unknown>,
+  );
+
+  return {
+    ...filteredUndefinedValues,
+    limit: limit || CONFIG.API.LIMIT,
+    offset: offset || CONFIG.API.OFFSET,
+  };
+};
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: CONFIG.API_BASE_URL,
@@ -21,9 +41,9 @@ apiClient.interceptors.response.use(
 );
 
 class BaseService {
-  async get<T>(endpoint: string, params: RequestParams = {}): Promise<T> {
+  async get<T>(endpoint: string, params?: QueryParams): Promise<T> {
     const response: AxiosResponse<T> = await apiClient.get(endpoint, {
-      params,
+      params: sanitizeParams(params),
     });
 
     return response.data;

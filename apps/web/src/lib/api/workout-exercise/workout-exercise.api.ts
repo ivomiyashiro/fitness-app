@@ -1,4 +1,4 @@
-import { WorkoutExercise } from "@/models";
+import { WorkoutExercise } from "@/domain";
 import BaseService from "..";
 import {
   WorkoutExerciseCreateRequest,

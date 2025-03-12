@@ -1,11 +1,16 @@
 import { cn } from "@/lib/utils";
 
-export const Spinner = ({ size = "lg" }: { size?: "sm" | "md" | "lg" }) => {
+export const Spinner = ({
+  size = "lg",
+}: {
+  size?: "xs" | "sm" | "md" | "lg";
+}) => {
   return (
     <div role="status">
       <svg
         aria-hidden="true"
-        className={cn("animate-spin fill-primary text-muted", {
+        className={cn("fill-primary text-muted animate-spin", {
+          "h-4 w-4": size === "xs",
           "h-8 w-8": size === "sm",
           "h-10 w-10": size === "md",
           "h-12 w-12": size === "lg",

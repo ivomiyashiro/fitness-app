@@ -1,5 +1,5 @@
 import BaseService from "..";
-import { TrainingPlan } from "@/models";
+import { TrainingPlan } from "@/domain";
 import {
   TrainingPlanPostRequest,
   TrainingPlanPutRequest,

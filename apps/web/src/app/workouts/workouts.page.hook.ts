@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { Workout } from "@/models";
+import { Workout } from "@/domain";
 
 import { WorkoutFormSchema } from "./workouts-form.hook";
 

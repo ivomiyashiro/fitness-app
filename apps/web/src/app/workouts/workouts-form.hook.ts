@@ -2,7 +2,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Workout } from "@/models";
+import { Workout } from "@/domain";
 
 import { WorkoutFormSchema } from "@/lib/schemes/workouts-form.schema";
 

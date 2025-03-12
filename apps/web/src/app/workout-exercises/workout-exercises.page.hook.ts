@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { WorkoutExercise } from "@/models";
+import { WorkoutExercise } from "@/domain";
 
 import {
   useWorkoutExercise,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { TrainingPlanWeek } from "@/models";
+import { TrainingPlanWeek } from "@/domain";
 
 import {
   useTrainingPlanWeek,

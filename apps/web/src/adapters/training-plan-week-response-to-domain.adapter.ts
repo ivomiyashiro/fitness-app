@@ -1,5 +1,5 @@
 import { TrainingPlanWeekResponse } from "@/lib/api/training-plan-week/training-plan-week.types";
-import { TrainingPlanWeek } from "@/models";
+import { TrainingPlanWeek } from "@/domain";
 
 export const trainingPlanWeekResponseToDomainAdapter = (
   response: TrainingPlanWeekResponse,

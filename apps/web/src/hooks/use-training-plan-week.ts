@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { TrainingPlanWeek } from "@/models";
+import { TrainingPlanWeek } from "@/domain";
 
 import { TrainingPlanWeekService } from "@/lib/api/training-plan-week/training-plan-week.api";
 import { TrainingPlanWeekPostRequest } from "@/lib/api/training-plan-week/training-plan-week.types";

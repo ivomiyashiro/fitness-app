@@ -1,15 +1,44 @@
-import { useQuery } from "@tanstack/react-query";
-import { ExerciseService } from "@/lib/api/exercise/exercise.api";
-import { GetParams } from "@/lib/api";
+import { useState } from "react";
+
+import { Exercise } from "@/domain";
+
+import { useDebounce } from "@/hooks/use-debounce";
+import { useInfiniteExercise } from "@/hooks/use-exercise";
 
 export const useExerciseCombobox = ({
-  limit,
-  offset,
-  search,
-}: GetParams = {}) => {
-  return useQuery({
-    queryKey: ["exercises"],
-    queryFn: () => ExerciseService.get({ limit, offset, search }),
-    refetchOnMount: false,
-  });
+  selected,
+}: {
+  selected?: Exercise[];
+}) => {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
+
+  const {
+    data,
+    totalCount,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteExercise({ search: debouncedSearch });
+
+  const selectedExercise = data?.filter((exercise) =>
+    selected?.some((ex) => ex.exerciseId === exercise.exerciseId),
+  );
+
+  const handleEndReached = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  return {
+    data,
+    handleEndReached,
+    handleSearch: setSearch,
+    isLoading: isLoading || isFetchingNextPage,
+    search,
+    selectedExercise,
+    totalCount,
+  };
 };

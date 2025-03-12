@@ -1,5 +1,5 @@
-import { Exercise } from "@/models";
-import { Combobox } from "@/components/ui/combobox";
+import { Exercise } from "@/domain";
+import { Combobox } from "@/components/ui/combobox/combobox";
 import { useExerciseCombobox } from "./exercise-combobox.hook";
 
 export const ExerciseCombobox = ({
@@ -13,22 +13,32 @@ export const ExerciseCombobox = ({
   mode?: "single" | "multiple";
   onSelect: (selected: Exercise[]) => void;
 }) => {
-  const { data } = useExerciseCombobox();
-  const selectedExercise = data?.filter((exercise) =>
-    selected?.some((ex) => ex.exerciseId === exercise.exerciseId),
-  );
+  const {
+    data,
+    handleEndReached,
+    handleSearch,
+    isLoading,
+    search,
+    selectedExercise,
+    totalCount,
+  } = useExerciseCombobox({ selected });
 
   return (
     <Combobox
       data={data || []}
+      isLoading={isLoading}
       labelKey="name"
       mode={mode}
+      onEndReached={handleEndReached}
+      onSearchChange={handleSearch}
+      onSelect={onSelect}
       placeholder={
         (placeholder ?? mode === "multiple") ? "Exercises..." : "Exercise..."
       }
+      searchValue={search}
       selected={selectedExercise || []}
+      totalCount={totalCount}
       valueKey="exerciseId"
-      onSelect={onSelect}
     />
   );
 };

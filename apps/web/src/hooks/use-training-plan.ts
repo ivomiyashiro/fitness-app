@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { TrainingPlan } from "@/models";
+import { TrainingPlan } from "@/domain";
 import {
   TrainingPlanPostRequest,
   TrainingPlanPutRequest,

@@ -1,6 +1,7 @@
-import BaseService from "..";
-import { GetParams } from "../index.types";
-import { ExerciseResponse } from "./exercise.api.types";
+import BaseService from "@/lib/api";
+import { PaginatedResponse } from "@/lib/api/index.types";
+
+import { ExerciseResponse, ExerciseQueryParams } from "./exercise.api.types";
 
 class Service {
   private baseService: BaseService;
@@ -10,8 +11,11 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: GetParams) {
-    return this.baseService.get<ExerciseResponse>(this.endpoint, params);
+  public get(params?: ExerciseQueryParams) {
+    return this.baseService.get<PaginatedResponse<ExerciseResponse>>(
+      this.endpoint,
+      params,
+    );
   }
 }
 

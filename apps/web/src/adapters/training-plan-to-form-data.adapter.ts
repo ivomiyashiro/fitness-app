@@ -1,5 +1,5 @@
 import { TrainingPlanFormData } from "@/app/training-plans/training-plans.page.hook";
-import { TrainingPlan } from "@/models";
+import { TrainingPlan } from "@/domain";
 
 export const trainingPlanToFormDataArray = (
   trainingPlan: TrainingPlan[],

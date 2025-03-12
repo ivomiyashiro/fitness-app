@@ -1,4 +1,4 @@
-import { WorkoutExercise } from "@/models";
+import { WorkoutExercise } from "@/domain";
 
 export const toExcerciseArray = (workoutExercises: WorkoutExercise[]) => {
   return workoutExercises.map((wex) => ({
