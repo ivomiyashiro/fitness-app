@@ -1,6 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+import { CONFIG } from "@/config";
 
 import { TrainingPlan } from "@/domain";
+
 import {
   TrainingPlanPostRequest,
   TrainingPlanPutRequest,
@@ -26,10 +34,43 @@ export const getTrainingPlansQueryKey = ({
 };
 
 export const useTrainingPlan = () => {
-  return useQuery({
+  const query = useQuery({
     queryKey: getTrainingPlansQueryKey({}),
     queryFn: () => TrainingPlanService.get(),
   });
+
+  return {
+    ...query,
+    data: query.data?.data || [],
+  };
+};
+
+export const useInfiniteTrainingPlan = ({ search }: { search: string }) => {
+  const query = useInfiniteQuery({
+    queryKey: ["training-plans", search],
+    queryFn: ({ pageParam = 0 }) =>
+      TrainingPlanService.get({
+        search,
+        offset: pageParam,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => {
+      const currentOffset = lastPage.meta.offset;
+      const totalCount = lastPage.meta.totalCount;
+      const nextOffset = currentOffset + CONFIG.API.LIMIT;
+
+      return nextOffset < totalCount ? nextOffset : undefined;
+    },
+  });
+
+  const data = query.data?.pages.flatMap((page) => page.data) || [];
+  const totalCount = query.data?.pages[0]?.meta.totalCount || 0;
+
+  return {
+    ...query,
+    data,
+    totalCount,
+  };
 };
 
 export const useTrainingPlanPut = ({

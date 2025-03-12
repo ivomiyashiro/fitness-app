@@ -3,6 +3,7 @@ import { NotepadTextIcon } from "lucide-react";
 import { PageLayout } from "@/components/layouts/page/page.layout";
 import { DrawerDialog } from "@/components/ui/drawer-dialog";
 import { List, ListItem } from "@/components/ui/list";
+import { AppFallback } from "@/components/ui/app-fallback";
 
 import {
   useTrainingPlanDeleteDrawer,
@@ -10,7 +11,6 @@ import {
   useTrainingPlansPage,
 } from "./training-plans.page.hook";
 import { TrainingPlanForm } from "./training-plans-form";
-import { AppFallback } from "@/components/ui/app-fallback";
 
 const TrainingPlansPage = () => {
   const { handleNavigate, trainingPlans, isFetching } = useTrainingPlansPage();

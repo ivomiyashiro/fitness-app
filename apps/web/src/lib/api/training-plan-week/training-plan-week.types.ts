@@ -5,7 +5,7 @@ export type TrainingPlanWeekResponse = {
   trainingPlanWeekId: string;
   trainingPlanId: string;
   weekNumber: number;
-  workouts: WorkoutResponse[];
+  workouts: Omit<WorkoutResponse, "trainingPlanWeekId">[];
 };
 
 export type TrainingPlanWeekPostRequest = {

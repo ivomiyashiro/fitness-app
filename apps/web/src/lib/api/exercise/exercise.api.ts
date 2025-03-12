@@ -1,6 +1,8 @@
 import BaseService from "@/lib/api";
 import { PaginatedResponse } from "@/lib/api/index.types";
 
+import { Exercise } from "@/domain";
+
 import { ExerciseResponse, ExerciseQueryParams } from "./exercise.api.types";
 
 class Service {
@@ -11,11 +13,15 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: ExerciseQueryParams) {
-    return this.baseService.get<PaginatedResponse<ExerciseResponse>>(
+  public get(
+    params?: ExerciseQueryParams,
+  ): Promise<PaginatedResponse<Exercise>> {
+    const result = this.baseService.get<PaginatedResponse<ExerciseResponse>>(
       this.endpoint,
       params,
     );
+
+    return result;
   }
 }
 

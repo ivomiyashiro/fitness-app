@@ -19,16 +19,18 @@ export type WorkoutResponse = {
   trainingPlanWeekId: string;
   name: string;
   order: number;
-  exercises: {
+  workoutExercises: {
     workoutExerciseId: string;
     order: number;
-    exercise: {
-      exerciseId: string;
-      name: string;
-    };
+    exercise: ExerciseResponse;
     workout: {
       workoutId: string;
       name: string;
     };
+    sets: {
+      setId: string;
+      reps: number;
+      rir: number;
+    }[];
   }[];
 };

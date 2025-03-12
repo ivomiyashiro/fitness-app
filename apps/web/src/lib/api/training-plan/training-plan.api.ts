@@ -5,7 +5,11 @@ import {
   TrainingPlanPutRequest,
   TrainingPlanResponse,
 } from "./training-plan.api.contracts";
-import { DeletedResponse, RequestParams } from "../index.types";
+import {
+  DeletedResponse,
+  PaginatedResponse,
+  QueryParams,
+} from "../index.types";
 
 class Service {
   private baseService: BaseService;
@@ -15,8 +19,8 @@ class Service {
     this.baseService = new BaseService();
   }
 
-  public get(params?: RequestParams): Promise<TrainingPlan[]> {
-    const result = this.baseService.get<TrainingPlanResponse[]>(
+  public get(params?: QueryParams): Promise<PaginatedResponse<TrainingPlan>> {
+    const result = this.baseService.get<PaginatedResponse<TrainingPlan>>(
       this.endpoint,
       params,
     );
@@ -25,25 +29,34 @@ class Service {
   }
 
   public post(data: TrainingPlanPostRequest): Promise<TrainingPlan> {
-    return this.baseService.post<TrainingPlanResponse>(this.endpoint, data);
+    const result = this.baseService.post<TrainingPlanResponse>(
+      this.endpoint,
+      data,
+    );
+
+    return result;
   }
 
   public put(
     trainingPlanId: TrainingPlan["trainingPlanId"],
     data: TrainingPlanPutRequest,
   ): Promise<TrainingPlan> {
-    return this.baseService.put<TrainingPlanResponse>(
+    const result = this.baseService.put<TrainingPlanResponse>(
       `${this.endpoint}/${trainingPlanId}`,
       data,
     );
+
+    return result;
   }
 
   public delete(
     trainingPlanId: TrainingPlan["trainingPlanId"],
   ): Promise<DeletedResponse> {
-    return this.baseService.delete<DeletedResponse>(
+    const result = this.baseService.delete<DeletedResponse>(
       `${this.endpoint}/${trainingPlanId}`,
     );
+
+    return result;
   }
 }
 

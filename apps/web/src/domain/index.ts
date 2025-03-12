@@ -2,14 +2,14 @@ export type TrainingPlan = {
   trainingPlanId: string;
   name: string;
   description: string;
-  trainingPlanWeeks: TrainingPlanWeek[];
+  trainingPlanWeeks: Omit<TrainingPlanWeek, "trainingPlanId">[];
 };
 
 export type TrainingPlanWeek = {
   trainingPlanWeekId: string;
   trainingPlanId: string;
   weekNumber: number;
-  workouts: Workout[];
+  workouts: Omit<Workout, "trainingPlanWeekId">[];
 };
 
 export type Workout = {
@@ -17,7 +17,7 @@ export type Workout = {
   name: string;
   order: number;
   trainingPlanWeekId: string;
-  exercises: WorkoutExercise[];
+  workoutExercises: Omit<WorkoutExercise, "workoutId">[];
 };
 
 export type Exercise = {
@@ -36,7 +36,7 @@ export type WorkoutExercise = {
     exerciseId: string;
     name: string;
   };
-  sets: Set[];
+  sets: Omit<Set, "workoutExerciseId">[];
 };
 
 export type Set = {
